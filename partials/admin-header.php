@@ -26,9 +26,17 @@
                 <button class="btn text-white me-3" data-bs-toggle="modal" data-bs-target="#notification-modal">
                     <i class="fas fa-bell fa-xl"></i>
                 </button>
-                <button class="btn text-white" id="profile">
-                    <i class="fa-regular fa-circle-user fa-2xl"></i>
-                </button>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="background-color: #000000;">
+                        <i class="fa-regular fa-circle-user fa-2xl text-white"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="admin-details.php">Profile</a></li>
+                        <!-- <li><a class="dropdown-item" href="./admin-auth/admin-login.php">Login</a></li> -->
+                        <li><a class="dropdown-item" href="./admin-auth/admin-logout.php">Logout</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -56,10 +64,19 @@
                     </li>
 
                     <li class="dropdown sidebar-item">
-                        <a href=" " class="text-dark d-flex align-items-center" style="width: 100%;">
+                        <a href="#" class="text-dark dropdown-toggle" id="ordersDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-cart-shopping mx-2" style="color: #000000;"></i>Orders
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="ordersDropdown"
+                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
+                            <li><a class="dropdown-item" href="../admin/order-overview.php">Overview</a></li>
+                            <li><a class="dropdown-item" href="../admin/order-delivered.php">Delivered</a></li>
+                            <li><a class="dropdown-item" href="../admin/order-cancelled.php">Cancelled</a></li>
+                            <li><a class="dropdown-item" href="../admin/order-return-refund.php">Return/Refund</a></li>
+                        </ul>
                     </li>
+
                     <li class="dropdown sidebar-item">
                         <a href="../admin/accounts.php" class="text-dark d-flex align-items-center" style="width: 100%;">
                             <i class="fa-solid fa-user-group mx-2" style="color: #000000;"></i>Accounts

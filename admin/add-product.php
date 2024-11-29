@@ -73,15 +73,16 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label for="image-url" class="form-label fw-bold">Image URL</label>
-                            <input type="url" class="form-control" id="image-url" name="image-url" placeholder="Enter Google Drive image URL">
+                            <input type="url" class="form-control" id="image-url" name="image-url">
                         </div>
                     </div>
         
                     <div class="row mt-5">
                         <div class="col text-end">
-                            <a href="./inventory-overview.php" class="btn btn-light me-2">Cancel</a>
-                            <!-- NOTE: Change "type=button" to "type=submit" -->
-                            <input type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirm-modal" value="Save">
+                            <button type="button" class="btn btn-light me-2" data-bs-toggle="modal"
+                                data-bs-target="#cancelConfirmModal">Cancel</button>
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                data-bs-target="#confirm-modal">Save</button>
                         </div>
                     </div>
                 </form>
@@ -93,7 +94,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content p-3">
                         <div class="modal-header justify-content-center pb-1" style="border-bottom: none;">
-                            <h5 class="modal-title text-success text-center fw-light" id="confirmModalLabel">CONFIRM PRODUCT DETAILS?</h5>
+                            <h5 class="modal-title text-success text-center fs-3 fw-light" id="confirmModalLabel">CONFIRM PRODUCT DETAILS?</h5>
                         </div>
                         <div class="modal-body text-center">
                             Are these details correct?
@@ -127,6 +128,24 @@
                 </div>
             </div>
 
+            <!-- Cancel Confirmation Modal -->
+            <div class="modal fade" id="cancelConfirmModal" tabindex="-1" aria-labelledby="cancelConfirmModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header justify-content-center pb-1" style="border-bottom: none;">
+                            <h5 class="modal-title text-danger text-center fs-3 fw-light" id="confirmModalLabel">CANCEL CHANGES?</h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            Are you sure you want to cancel? Any unsaved changes will be lost.
+                        </div>
+                        <div class="modal-footer justify-content-center text center pt-1" style="border-top: none;">
+                            <button type="button" class="btn btn-dark me-3" data-bs-dismiss="modal">Stay</button>
+                            <a href="./inventory-overview.php" class="btn btn-danger ms-3">Leave</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 

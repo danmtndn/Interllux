@@ -93,6 +93,7 @@
                     <input type="text" class="form-control bg-white" id="status" value="Out of Stock" disabled>
                 </div>
                 <div class="col-md-3 ms-auto d-flex align-items-end justify-content-md-end">
+                    <a href="./inventory-overview.php" class="btn btn-sm btn-light me-2" style="width: 120px;">Back</a>
                     <a href="./edit-details.php" class="btn btn-dark btn-sm fw-medium" style="width: 120px;">Edit</a>
                 </div>
             </div>

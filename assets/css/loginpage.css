@@ -10,7 +10,6 @@ body {
   background-attachment: fixed;
 }
 
-
 .form-signin {
   height: 650px;
   max-width: 400px;
@@ -89,3 +88,8 @@ input:valid+label.fill {
   transition: color 0.2s ease; /* Smooth transition if color changes */
 }
 
+#admin-login {
+  background-image: url('../../assets/image/clothing-store-with-blurred-effect.jpg');
+  background-size: cover;
+  background-position: center;
+}

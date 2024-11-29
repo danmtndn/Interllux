@@ -1,3 +1,5 @@
+// JS FOR ADMIN SIDE ONLY
+
 // for dynamic Status under add-product & edit-details.php
 function updateStatus() {
     const inventoryQty = parseInt(document.getElementById('inventory-qty').value) || 0;

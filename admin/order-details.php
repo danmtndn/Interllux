@@ -1,234 +1,245 @@
 <?php include '../partials/admin-header.php'; ?>
 
-<?php
-$order_no = isset($_GET['order_no']) ? $_GET['order_no'] : 'ORD111'; 
-$order_date = '2024-11-20'; 
-$order_status = 'Processing'; 
+    <main class="p-2 px-4">
+        <section id="order-details">
+            <div class="content p-4">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-6">
+                        <h1 class="fw-bold mb-0">Order Details</h1>
+                    </div>
+                </div>
 
-$order_status_history = [
-    ['Confirmation', '2024-11-20'],
-    ['Shipped', '2024-11-21'],
-    ['Delivered', '2024-11-22'],
-    ['Done', '2024-11-23'],
-];
+                <!-- OVERVIEW -->
+                <div class="mt-4 mb-2">
+                    <p class="fw-bold mt-2 mb-0 fs-4">Overview:</p>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <p><strong>Order No:</strong> ORD111</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total Amount:</strong> ₱00.00</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Order Date:</strong> yyyy-mm-dd</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Tracking Number:</strong> ---</p>
+                        </div>
+                    </div>
+                </div>
 
-$total_amount = '₱185,150'; // Example total amount
-$tracking_number = '123456789'; // Example tracking number
+                <!-- ORDER TRACKER -->
+                <div class="table-responsive">
+                    <p class="fw-bold mb-2 fs-4">Order Tracker:</p>
+                    <div class="col-md-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ORDER STATUS</th>
+                                    <th scope="col">DATE</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Confirmation Row -->
+                                <tr>
+                                    <td>Confirmation</td>
+                                    <td>27/11/2024</td>
+                                    <td>
+                                        <button class="btn btn-secondary" disabled>Done</button>
+                                    </td>
+                                </tr>
 
-// Customer Information
-$customer_name = 'Jane Doe';
-$shipping_address = 'Sampaguita St, Barangay San Antonio, San Pedro Laguna, 4023, Philippines';
+                                <!-- Shipped Row -->
+                                <tr>
+                                    <td>Shipped</td>
+                                    <td>27/11/2024</td>
+                                    <td>
+                                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#shippedModal">Update</button>
+                                    </td>
+                                </tr>
 
-// Payment Information
-$payment_method = 'E-Wallet';
-$payment_account = '9474567890';
-$payment_date = '11-06-2024';
-$payment_ref = '7457107419583';
+                                <!-- Delivered Row -->
+                                <tr>
+                                    <td>Delivered</td>
+                                    <td>---</td>
+                                    <td>
+                                        <button class="btn btn-success" id="deliveredBtn" data-bs-toggle="modal" data-bs-target="#deliveredModal" disabled>Update</button>
+                                    </td>
+                                </tr>
 
-// Price Breakdown
-$subtotal = '₱185,000';
-$shipping_fee = '₱150';
+                                <!-- Complete Row -->
+                                <tr>
+                                    <td>Complete</td>
+                                    <td>---</td>
+                                    <td>
+                                        <button class="btn btn-success" disabled>Not Yet</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-// Order Items
-$order_items = [
-    ['Lv Bag', 1, '₱150,000', '₱150,000'],
-    ['Channel Bag', 1, '₱35,000', '₱35,000'],
-];
+                <!-- Shipped Modal -->
+                <div class="modal fade" id="shippedModal" tabindex="-1" aria-labelledby="shippedModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content p-3">
+                            <div class="modal-header justify-content-center pb-1" style="border-bottom: none;">
+                                <h5 class="modal-title text-center fs-3 fw-bold" id="shippedModalLabel">Order #111 has been shipped</h5>
+                            </div>
+                            <div class="modal-body text-center fs-5 pt-0">
+                                Enter tracking number:
+                                <input type="text" class="form-control mt-2" id="trackingNumber" placeholder="Enter here" required>
+                                <div id="trackingNumberWarning" class="text-danger fw-bold mt-2" style="display: none;">Tracking number is required!</div>
+                            </div>
+                            <div class="modal-footer justify-content-center text-center pt-1" style="border-top: none;">
+                                <button type="button" class="btn btn-success me-3" id="saveShippedBtn">Save</button>
+                                <button type="button" class="btn btn-danger ms-3" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-// Customer Review
-$customer_review = 'No review yet';
-?>
+                <!-- Delivered Modal -->
+                <div class="modal fade" id="deliveredModal" tabindex="-1" aria-labelledby="deliveredModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content p-3">
+                            <div class="modal-header justify-content-center pb-1" style="border-bottom: none;">
+                                <h5 class="modal-title text-center fs-3 fw-bold" id="deliveredModalLabel">Order #111</h5>
+                            </div>
+                            <div class="modal-body text-center fs-4 fw-bold pt-0">
+                                Has the order been delivered?
+                            </div>
+                            <div class="modal-footer justify-content-center text-center pt-1" style="border-top: none;">
+                                <button type="button" class="btn btn-success me-3" id="saveDeliveredBtn">Save</button>
+                                <button type="button" class="btn btn-danger ms-3" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<main class="container my-4">
-    <!-- Heading aligned to the left side of the screen -->
-    <h4 class="fw-bold mb-4" style="text-align: left;">Order Details</h4>
-    <h4 class="fw-bold mb-4" style="text-align: left;">Overview</h4>
 
-    <!-- Order Info -->
-    <div class="mb-4">
-        <div class="d-flex justify-content-between">
-            <p><strong>Order No:</strong> <?php echo $order_no; ?></p>
-            <p><strong>Total Amount:</strong> <?php echo $total_amount; ?></p>
-        </div>
-        
-        <div class="d-flex justify-content-between">
-            <p><strong>Order Date:</strong> <?php echo $order_date; ?></p>
-            <p><strong>Tracking Number:</strong> <?php echo $tracking_number; ?></p>
-        </div>
+                <!-- CUSTOMER INFO -->
+                <div class="my-3">
+                    <p class="fw-bold mt-2 mb-0 fs-4">Customer Information:</p>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <p><strong>Name:</strong> Jane Doe</p>
+                            <p><strong>Shipping Address:</strong> Carmelite St., Brgy. San Lucas 1, San Pablo City, Laguna, 4000</p>
+                        </div>
 
-        <div class="d-flex align-items-center">
-            <p class="mb-0"><strong>Order Status: </strong></p>
-            
-            <!-- Dropdown button for selecting order status -->
-            <div class="dropdown ms-3">
-                <button class="btn btn-light dropdown-toggle" type="button" id="orderStatusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo $order_status; ?>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="orderStatusDropdown">
-                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Processing')">Processing</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Shipped')">Shipped</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Delivered')">Delivered</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Done')">Done</a></li>
-                </ul>
+                        <div class="col-md-4">
+                            <p><strong>Method:</strong> E-Wallet</p>
+                            <p><strong>Account:</strong> 123456789</p>
+                            <p><strong>Payment Date:</strong> 27/11/2024</p>
+                            <p><strong>Reference Number:</strong> 987654321</p>
+                        </div>
+
+                        <div class="col-md-4">
+                            <p><strong>Subtotal:</strong> ₱00.00</p>
+                            <p><strong>Shipping Fee:</strong> ₱00.00</p>
+                            <p><strong>Total Amount:</strong> ₱00.00</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ORDER ITEMS -->
+                <div class="table-responsive mt-4">
+                <table class="table table-hover fs-6">
+                    <thead>
+                        <tr>
+                            <th scope="col">PRODUCT NAME</th>
+                            <th scope="col">QUANTITY</th>
+                            <th scope="col">UNIT PRICE</th>
+                            <th scope="col">ITEM PRICE</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-light">
+                        <tr>
+                            <td>Lv Bag</td>
+                            <td>1</td>
+                            <td>₱00.00</td>
+                            <td>₱00.00</td>
+                        </tr>
+                        <tr>
+                            <td>Channel Bag</td>
+                            <td>1</td>
+                            <td>₱00.00</td>
+                            <td>₱00.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+
+
+                <!-- CUSTOMER REVIEWS -->
+                <div class="mt-3">
+                    <h5><strong>Customer Review</strong></h5>
+                    <p class="col-md-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit commodi aperiam dolorum incidunt velit dolor veritatis a, nostrum facere laboriosam! Aliquam, temporibus cupiditate magni veritatis alias quis quasi maiores ullam?</p>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <a href="./order-overview.php" class="btn btn-dark">Back to Orders</a>
+                </div>
             </div>
-
-            <!-- Save button aligned next to the dropdown -->
-            <button type="button" class="btn btn-success ms-3" onclick="saveStatus()">Save</button>
-        </div>
-    </div>
-
-    <!-- Order Status  Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <!-- checkbox -->
-                    <th style="border-left: 2px solid black; border-right: 2px solid black;">
-                        <input type="checkbox" id="selectAll" onclick="selectAllCheckboxes()">
-                    </th>
-                    <th style="border-left: 2px solid black; border-right: 2px solid black;">Order Status</th>
-                    <th style="border-left: 2px solid black; border-right: 2px solid black;">Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order_status_history as $status): ?>
-                    <tr>
-                        <td style="border-left: 2px solid black; border-right: 2px solid black;">
-                            <input type="checkbox" class="statusCheckbox">
-                        </td> <!-- Checkbox for each row -->
-                        <td style="border-left: 2px solid black; border-right: 2px solid black;"><?php echo $status[0]; ?></td>
-                        <td style="border-left: 2px solid black; border-right: 2px solid black;"><?php echo $status[1]; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Customer, Payment Information and Price Breakdown -->
-    <div class="mt-4 row">
-        <!-- Customer Information -->
-        <div class="col-12 col-md-4 mb-3">
-            <h5><strong>Customer Information</strong></h5>
-            <p><strong>Name:</strong> <?php echo $customer_name; ?></p>
-            <p><strong>Shipping Address:</strong><br><?php echo nl2br($shipping_address); ?></p>
-        </div>
-
-        <!-- Payment Information -->
-        <div class="col-12 col-md-4 mb-3">
-            <h5><strong>Payment Information</strong></h5>
-            <p><strong>Method:</strong> <?php echo $payment_method; ?></p>
-            <p><strong>Account:</strong> <?php echo $payment_account; ?></p>
-            <p><strong>Payment Date:</strong> <?php echo $payment_date; ?></p>
-            <p><strong>Ref#:</strong> <?php echo $payment_ref; ?></p>
-        </div>
-
-        <!-- Price Breakdown -->
-        <div class="col-12 col-md-4 mb-3">
-            <h5><strong>Price Breakdown</strong></h5>
-            <p><strong>Subtotal:</strong> <?php echo $subtotal; ?></p>
-            <p><strong>Shipping Fee:</strong> <?php echo $shipping_fee; ?></p>
-            <p><strong>Total Amount:</strong> <?php echo $total_amount; ?></p>
-        </div>
-    </div>
-
-    <!-- Order Items Table -->
-    <div class="mt-4">
-        <h5><strong>Order Items</strong></h5>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Item Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order_items as $item): ?>
-                    <tr>
-                        <td><?php echo $item[0]; ?></td>
-                        <td><?php echo $item[1]; ?></td>
-                        <td><?php echo $item[2]; ?></td>
-                        <td><?php echo $item[3]; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Customer Review -->
-    <div class="mt-4">
-        <h5><strong>Customer Review</strong></h5>
-        <p><?php echo $customer_review; ?></p>
-    </div>
-
-    <!-- Back Button -->
-    <div class="mt-4">
-        <a href="overview.php" class="btn btn-dark">Back to Orders</a>
-    </div>
-</main>
-
-<!-- Modal for "Shipped" Status -->
-<div class="modal fade" id="shippedModal" tabindex="-1" aria-labelledby="shippedModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="shippedModalLabel">Order Status: Shipped</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Order Number:</strong> <?php echo $order_no; ?> has been shipped.</p>
-                <p><strong>Please enter the tracking number:</strong></p>
-                <input type="text" class="form-control" id="trackingNumber" placeholder="Enter tracking number">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-dark" onclick="saveTrackingNumber()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
+        </section>
+    </main>
 
 <?php include '../partials/admin-footer.php'; ?>
 
+
 <script>
-    // JavaScript function to trigger modal when "Shipped" status is selected
-    function changeStatus(status) {
-        if (status === 'Shipped') {
-            // Open the modal for tracking number input
-            var modal = new bootstrap.Modal(document.getElementById('shippedModal'));
-            modal.show();
+    // JavaScript logic to handle button state updates, modal closing, and form validation
+    const deliveredBtn = document.getElementById('deliveredBtn'); // The Delivered button
+    const trackingNumberInput = document.getElementById('trackingNumber');
+    const trackingNumberWarning = document.getElementById('trackingNumberWarning'); // Warning message
+
+    // Disable Delivered button initially
+    deliveredBtn.disabled = true;
+
+    document.getElementById('saveShippedBtn').addEventListener('click', function() {
+        // Check if the tracking number is entered
+        if (trackingNumberInput.value.trim() === '') {
+            trackingNumberWarning.style.display = 'block'; // Show warning message
+            return; // Prevent modal from closing if input is empty
         }
-        
-        document.getElementById('orderStatusDropdown').innerText = status;
-    }
 
-    // Function to save tracking number when "Save" is clicked
-    function saveTrackingNumber() {
-        var trackingNumber = document.getElementById('trackingNumber').value;
-        if (trackingNumber) {
-            // You can save the tracking number to the database here or send via AJAX
-            console.log('Tracking Number Saved: ' + trackingNumber);
+        // Hide warning if tracking number is provided
+        trackingNumberWarning.style.display = 'none';
 
-            // Close the modal after saving
-            var modal = bootstrap.Modal.getInstance(document.getElementById('shippedModal'));
-            modal.hide();
-        } else {
-            alert('Please enter a tracking number');
-        }
-    }
+        const shippedRowAction = document.querySelector('tbody tr:nth-child(2) td:last-child button');
+        shippedRowAction.classList.remove('btn-success');
+        shippedRowAction.classList.add('btn-secondary');
+        shippedRowAction.setAttribute('disabled', 'true');
+        shippedRowAction.textContent = 'Done';
 
-    // Function to simulate saving the status (you can use AJAX here to update the status)
-    function saveStatus() {
-        alert('Order status saved');
-    }
+        // Close the modal using the Bootstrap Modal instance
+        const shippedModal = bootstrap.Modal.getInstance(document.getElementById('shippedModal'));
+        shippedModal.hide();
 
-    // Function to select/unselect all checkboxes
-    function selectAllCheckboxes() {
-        var checkboxes = document.querySelectorAll('.statusCheckbox');
-        var selectAllCheckbox = document.getElementById('selectAll');
-        checkboxes.forEach(function(checkbox) {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-    }
+        // Enable the Delivered button when Shipped is done
+        deliveredBtn.disabled = false;
+    });
+
+    document.getElementById('saveDeliveredBtn').addEventListener('click', function() {
+    // Get the current date in 'dd/mm/yyyy' format
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-GB'); // Format as 'dd/mm/yyyy'
+
+    // Set the "Delivered" row date to the current date
+    document.querySelector('tbody tr:nth-child(3) td:nth-child(2)').textContent = formattedDate;
+
+    // Change the button to "Done" and disable it
+    const deliveredRowAction = document.querySelector('tbody tr:nth-child(3) td:last-child button');
+    deliveredRowAction.classList.remove('btn-success');
+    deliveredRowAction.classList.add('btn-secondary');
+    deliveredRowAction.setAttribute('disabled', 'true');
+    deliveredRowAction.textContent = 'Done';
+
+    // Close the modal using the Bootstrap Modal instance
+    const deliveredModal = bootstrap.Modal.getInstance(document.getElementById('deliveredModal'));
+    deliveredModal.hide();
+    });
 </script>
