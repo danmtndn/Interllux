@@ -30,7 +30,7 @@
   <div class="container-fluid background-image">
     <div class="overlay"></div>
     <a href="../../user/product_catalog/product_catalog.php" class="z-2">
-      <button type="button" class="btn btn-outline-light btn-lg rounded-0 px-5">Shop Now</button>
+      <button type="button" class="shopnow btn btn-outline-light btn-lg rounded-0 px-5">Shop Now</button>
     </a>
 
     <!-- Down Arrow Button with Link to Reviews Section -->
@@ -156,11 +156,11 @@
 
   <!-- YOU MAY ALSO LIKE CONTAINER -->
 
-  
+
   <div id="catalog">
     <script src="../../assets/js/recommendation.js"></script>
   </div>
-  
+
   <div id="footer">
     <script src="../../assets/js/footer.js"></script>
   </div>

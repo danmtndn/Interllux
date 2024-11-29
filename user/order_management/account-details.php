@@ -65,13 +65,12 @@
   <!-- END NAVBAR -->
 
   <!-- PROFILE BACKGROUND-->
-  <div class="profile-background container-fluid p-0 m-0 mt-5 pt-3">
+  <div class="profile-background container-fluid mt-5 pt-3">
     <h5 class="pt-5 ms-3">Hi! Orlando</h5>
   </div>
 
   <div class="container-fluid px-3 py-3">
-    <div class="container d-flex  justify-content-center mb-3 mt-3">
-
+    <div class="container-fluid  d-flex justify-content-end mb-3 mt-3">
       <!-- EDIT BUTTONS -->
       <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editUsernameModal">
         Edit Username or Password
@@ -80,8 +79,11 @@
         Edit Account Details
       </button>
     </div>
-    <hr class="mt-4">
+  </div>
+  <hr class="mt-4">
+  </div>
 
+  <div class="container">
     <!-- DISPLAY ACCOUNT DETAILS -->
     <h5 class="mb-4 mt-3">Account Details</h4>
       <form>
@@ -175,8 +177,7 @@
   </div>
 
   <!-- EDIT USERNAME/PASSWORD -->
-  <div class="modal fade" id="editUsernameModal" tabindex="-1" aria-labelledby="editUsernameModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="editUsernameModal" tabindex="-1" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -212,8 +213,7 @@
   </div>
 
   <!-- EDIT ACCOUNT DETAILS -->
-  <div class="modal fade" id="editDetailsModal" tabindex="-1" aria-labelledby="editDetailsModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="editDetailsModal" tabindex="-1" aria-labelledby="editDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -278,8 +278,7 @@
             <!--EDIT COUNTRY -->
             <div class="mb-3">
               <label for="editCountry" class="form-label">Country</label>
-              <input type="text" id="editCountry" class="form-control shadow-none border-secondary" value="Philippines"
-                readonly>
+              <input type="text" id="editCountry" class="form-control shadow-none border-secondary" value="Philippines" readonly>
             </div>
           </form>
 

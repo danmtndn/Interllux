@@ -40,9 +40,9 @@
     <script src="../../assets/js/navbar.js"></script>
   </div>
 
-  <div class="container-fluid">
+  <div class="container-fluid mt-5 pt-2">
     <!-- Sorting -->
-    <div class="row position-fixed bg-light p-0  pt-3 z-3 w-100">
+    <div class="row position-fixed bg-light pb-2 pt-3 z-3 w-100">
       <div class="col-12 d-flex justify-content-center  gap-2 ">
         <!-- Sort By Dropdown -->
         <select id="sortOptions" class="form-select w-auto rounded-0 shadow-none border-black" aria-label="Sort By">

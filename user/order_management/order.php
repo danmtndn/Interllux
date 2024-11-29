@@ -70,11 +70,11 @@
           </button>
         </a>
       </div>
-      <!-- TO RATE -->
+      <!-- DELIVERED -->
       <div class="col p-0">
-        <a class="text-dark" href="tracker.php?tab=to-rate">
+        <a class="text-dark" href="delivered.php">
           <button type="button" class="tracker-btn btn btn-sm position-relative p-0 px-2">
-            <i class="bi bi-star fs-1"></i><br>Review
+            <i class="bi bi-check2-square fs-1"></i><br>Delivered
             <span class="position-absolute top-0 start-100 translate-middle  ps- pe-3 badge rounded-pill bg-dark">
               1
               <span class="visually-hidden">unread messages</span>
@@ -86,6 +86,18 @@
   <!-- CANCELED ORDERS AND RETURN REFUND ORDERS -->
   <div class="container mt-3 pb-5 border-2 border-bottom">
     <div class="row text-center">
+
+      <!-- TO RATE -->
+      <div class="col p-0">
+        <a class="text-dark" href="tracker.php?tab=to-rate">
+          <button type="button" class="tracker-btn btn btn-sm position-relative p-0 px-2">
+            <i class="bi bi-star fs-1"></i><br>Review
+            <span class="position-absolute top-0 start-100 translate-middle  ps- pe-3 badge rounded-pill bg-dark">
+              1
+              <span class="visually-hidden">unread messages</span>
+          </button>
+        </a>
+      </div>
       <!-- CANCELLED  -->
       <div class="col p-0">
         <a class="text-dark" href="cancelled-order.php">
@@ -101,7 +113,7 @@
       <div class="col p-0">
         <a class="text-dark" href="refunded-order.php">
           <button type="button" class="tracker-btn btn btn-sm position-relative p-0 px-2">
-            <i class="bi bi-check2-square fs-1"></i><br>Returned
+            <i class="bi bi-box-arrow-in-left fs-1"></i><br>Returned
             <span class="position-absolute top-0 start-100 translate-middle  ps- pe-3 badge rounded-pill bg-dark">
               1
               <span class="visually-hidden">unread messages</span>
@@ -116,9 +128,6 @@
           </button>
         </a>
       </div>
-
-      <div class="col">
-      </div>
     </div>
   </div> <!-- END CANCELLED -->
 
@@ -127,11 +136,9 @@
 
 
   <!-- PRODUCT CATALOG -->
-  <?php
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  ?>
+  <div id="catalog">
+    <script src="../../assets/js/recommendation.js"></script>
+  </div>
 
   <!-- FOOTER -->
   <div id="footer">

@@ -57,52 +57,26 @@
 
 <body>
   <!-- NAVBAR -->
-  <nav class="navbar fixed-top bg-light shadow-sm">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-      <div>
-        <a class="navbar-brand" href="order.php">
-          <button class="btn btn-sm px-1">
-            <i class="bi bi-arrow-left-short text-dark fs-1 fw-bold" style="font-size: 1.5rem;"></i>
-          </button>
-        </a>
-      </div>
+  <nav class="navbar bg-body-tertiary fixed-top shadow-sm py-0">
+    <div class="container-fluid">
+      <!-- Left Arrow Icon -->
+      <a class="navbar-brand" href="order.php">
+        <button class="btn btn-sm px-1">
+          <i class="bi bi-arrow-left-short text-dark fs-1 fw-bold" style="font-size: 1.5rem;"></i>
+        </button>
+      </a>
 
-      <div class="ms-4">
-        <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark " href="../../user/user_auth/index.php">
-          <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
-          Interllux
-        </a>
-      </div>
-
-      <div class="d-flex justify-content-center align-items-center me-md-3">
-        <a class="text-dark text-decoration-none pt-0" style="margin-top: 3px;" href="../../user/user_auth/loginpage.php">
-          <i class="bi bi-person fs-4"></i>
-        </a>
-        <a href="#" class="text-decoration-none mx-3 pt-0" data-bs-toggle="offcanvas" data-bs-target="#cartPanel"
-          aria-controls="cartPanel">
-          <i class="bi bi-cart2 fs-5 text-dark"></i>
-        </a>
-        <a href="#" class="text-decoration-none mt-0" style="margin-top: 5px;" data-bs-toggle="collapse"
-          data-bs-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse">
-          <i class="bi bi-search fs-5 text-dark"></i>
-        </a>
-      </div>
-    </div>
-
-    <!-- Full-width Collapsible Search Bar -->
-    <div class="collapse bg-body-light w-100 mt-1" id="searchCollapse">
-      <div class="container-fluid p-2">
-        <div class="input-group">
-          <input type="text"
-            class="form-control border-secondary border-start-0 border-top-0 border-end-0 rounded-0 shadow-none"
-            placeholder="Search here" aria-label="Search">
-          <button class="btn btn-close btn-sm shadow-none ms-2 mt-2" type="button" data-bs-toggle="collapse"
-            data-bs-target="#searchCollapse" aria-controls="searchCollapse" aria-label="Close"></button>
-        </div>
-      </div>
+      <!-- Navbar Brand Name Centered -->
+      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark" href="../../user/user_auth/index.php">
+        <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
+        Interllux
+      </a>
+      <p class="navbar-brand">
+        <i class="bi bi-arrow-left-short text-light" style="font-size: 1.5rem;"></i>
+      </p>
     </div>
   </nav>
-
+  <!-- END NAVBAR -->
   <!-- Off-canvas Menu on the Left -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="sideNav" aria-labelledby="sideNavLabel">
     <div class="offcanvas-header d-flex justify-content-center align-items-center">

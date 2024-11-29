@@ -31,8 +31,8 @@
     </div>
   </nav>
 
-  <div class="container mt-5 pt-3">
-    <h2 class="text-center">Product Review</h2>
+  <div class="container mt-5">
+    <h2 class="text-center pt-5">Product Review</h2>
     <div id="product-info" class="card mb-4">
     <div class="card d-flex flex-row">
     <img src="../../assets/image/Bottega Veneta Cassette.png" class="img-fluid" alt="Bottega Veneta Cassette" style="width: 100px; height: 100px; object-fit: cover;">

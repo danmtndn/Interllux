@@ -4,15 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Checkout Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Luxury Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="../../assets/css/cart/style.css">
+
+    <!-- BOOTSTRAP ICON -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
     <style>
-        .product-image{
+        .product-image {
             width: 70%;
         }
     </style>
@@ -21,9 +26,27 @@
 
 <body>
 
-    <div id="navbar">
-        <script src="../../assets/js/navbar.js"></script>
-    </div>
+    <!-- NAVBAR -->
+    <nav class="navbar bg-body-tertiary fixed-top shadow-sm py-0">
+        <div class="container-fluid">
+            <!-- Left Arrow Icon -->
+            <a class="navbar-brand" href="../../user/product_catalog/product_catalog.php">
+                <button class="btn btn-sm px-1">
+                    <i class="bi bi-arrow-left-short text-dark fs-1 fw-bold" style="font-size: 1.5rem;"></i>
+                </button>
+            </a>
+
+            <!-- Navbar Brand Name Centered -->
+            <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark" href="../../user/user_auth/index.php">
+                <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
+                Interllux
+            </a>
+            <p class="navbar-brand">
+                <i class="bi bi-arrow-left-short text-light" style="font-size: 1.5rem;"></i>
+            </p>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
 
     <div class="product-container">
         <div class="product-image text-center d-flex flex-row align-items-start justify-content-center">
@@ -31,18 +54,12 @@
             <img id="main-product-image" src="../../assets/image/Alma BB.png" alt="Product Image" class="img-fluid mb-3">
             <!-- Thumbnails for additional images -->
             <div class="thumbnail-container m-0 d-flex flex-wrap justify-content-center gap-2">
-                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 1" class="thumbnail img-thumbnail"
-                    onclick="changeMainImage('img/product1.jpg')">
-                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 2" class="thumbnail img-thumbnail"
-                    onclick="changeMainImage('img/product2.jpg')">
-                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 3" class="thumbnail img-thumbnail"
-                    onclick="changeMainImage('img/product3.jpg')">
-                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 4" class="thumbnail img-thumbnail"
-                    onclick="changeMainImage('img/product1.jpg')">
-                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 5" class="thumbnail img-thumbnail"
-                    onclick="changeMainImage('img/product2.jpg')">
-                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 6" class="thumbnail img-thumbnail"
-                    onclick="changeMainImage('img/product3.jpg')">
+                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 1" class="thumbnail img-thumbnail" onclick="changeMainImage('img/product1.jpg')">
+                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 2" class="thumbnail img-thumbnail" onclick="changeMainImage('img/product2.jpg')">
+                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 3" class="thumbnail img-thumbnail" onclick="changeMainImage('img/product3.jpg')">
+                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 4" class="thumbnail img-thumbnail" onclick="changeMainImage('img/product1.jpg')">
+                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 5" class="thumbnail img-thumbnail" onclick="changeMainImage('img/product2.jpg')">
+                <img src="../../assets/image/Alma BB.png" alt="Thumbnail 6" class="thumbnail img-thumbnail" onclick="changeMainImage('img/product3.jpg')">
             </div>
         </div>
         <div class="product-info">

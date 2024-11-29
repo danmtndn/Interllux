@@ -68,39 +68,9 @@
     <!-- END OF NAVBAR -->
 
     <div class="container mt-5 pt-5">
-        <div class="review-header text-center">
+        <div class="review-header text-center shadow">
             <h1>We Value Your Feedback!</h1>
             <p>Share your thoughts or review your favorite products below:</p>
-            <button class="btn btn-dark w-100" id="toggleFormButton">Write a Review</button>
-        </div>
-
-        <div id="reviewForm">
-            <form>
-
-                <div class="mb-3">
-                    <label for="reviewContent" class="form-label">Review</label>
-                    <textarea class="form-control" id="reviewContent" rows="4"
-                        placeholder="Write your comments here"></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="publicName" class="form-label">Name (displayed publicly, e.g., John S.)</label>
-                    <input type="text" class="form-control" id="publicName" placeholder="Enter your name (public)">
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email (private)">
-                    <small class="text-muted">How we use your data: We’ll only contact you about the review you left,
-                        and only if necessary. By submitting your review, you agree to Judge.me’s terms, privacy, and
-                        content policies.</small>
-                </div>
-
-                <div class="btn-container">
-                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                    <button type="reset" class="btn btn-secondary">Cancel Review</button>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -233,7 +203,7 @@
 
     <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
     <script>
-        document.getElementById('toggleFormButton').addEventListener('click', function () {
+        document.getElementById('toggleFormButton').addEventListener('click', function() {
             const form = document.getElementById('reviewForm');
             const button = this;
 

@@ -2,36 +2,12 @@ html {
   scroll-behavior: smooth;
 }
 
-.background-image {
-  background-image: url("../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg") !important;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 500px;
-  margin-top: 55px;
-  position: relative;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
-
-.btn:hover {
-  background: #d2d0d0 !important;
-  opacity: 75%;
-  border: none;
-}
-
 body {
   margin: 0;
   padding: 0;
 }
+
+
 
 .background-image {
   background-image: url("../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg") !important;
@@ -49,7 +25,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
 
@@ -60,11 +38,8 @@ body {
   top: 530px;
 }
 
-.fa-angle-down {
-  font-size: 30px;
-}
-
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
@@ -112,7 +87,14 @@ body {
 }
 
 .review-card .card-img-top {
-  width: 100%; /* Ensures the image width matches the card */
-  height: 300px; /* Set a fixed height */
-  object-fit: cover; /* Ensures the image fills the space without stretching */
+  width: 100%;
+  /* Ensures the image width matches the card */
+  height: 300px;
+  /* Set a fixed height */
+  object-fit: cover;
+  /* Ensures the image fills the space without stretching */
+}
+
+.shopnow:hover {
+  opacity: 70% !important;
 }

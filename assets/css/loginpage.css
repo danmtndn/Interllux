@@ -85,7 +85,7 @@ input:valid+label.fill {
 }
 
 .form-floating label.fill {
-   background: transparent !important;
+  background: transparent !important;
   transition: color 0.2s ease; /* Smooth transition if color changes */
 }
 

@@ -37,7 +37,7 @@
     <div class="row g-4">
       <!-- Checked-Out Products (Left Column) -->
       <div class="col-md-5">
-        <h4 class="ms-2">Checked-Out Products</h4>
+        <h4 class="ms-2">Check-Out Products</h4>
         <div class="card">
           <div class="card-body">
             <!-- Product Item -->
@@ -168,7 +168,7 @@
           <!-- Submit Button -->
           <div class="mt-3">
             <a href="#">
-              <button type="submit" class="btn btn-dark w-100">Confirm Payment</button>
+              <button type="submit" class="btn btn-dark w-100">Place Order</button>
             </a>
 
           </div>

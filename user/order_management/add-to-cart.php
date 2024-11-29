@@ -58,9 +58,9 @@
           </div>
 
           <div class=" d-flex flex-column align-items-start justify-content-end">
-            <div class="input-group input-group-sm me-0 me-sm-3 mb-3 mb-sm-0" style="width: 80px;">
+            <div class="input-group input-group-sm me-0 me-sm-3 mb-3 mb-sm-0" style="width: 90px;">
               <button class="btn btn-outline-dark btn-sm decrease-btn">-</button>
-              <input type="number" class="form-control text-center quantity-input" value="1" min="1">
+              <input type="" class="form-control ps-3 quantity-input" value="1" min="1">
               <button class="btn btn-outline-dark btn-sm increase-btn">+</button>
             </div>
             <div class="mt-md-2 mt-sm-0">
