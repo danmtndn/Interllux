@@ -88,14 +88,15 @@
     </div>
 
     <div class="text-center mt-3">
-      <button id="seeMoreButton" class="btn btn-dark"><a href="../../user/product_catalog/product_catalog.php" class="nav-link">See More</a></button>
+      <button id="seeMoreButton" class="btn btn-dark"><a href="../../user/product_catalog/product_catalog.php"
+          class="nav-link">See More</a></button>
     </div>
   </div>
 
   <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       const productCards = document.querySelectorAll(".product-card");
       const seeMoreButton = document.getElementById("seeMoreButton");
       const itemsToShowDesktop = 4;

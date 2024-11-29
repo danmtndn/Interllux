@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 
   <style>
-    input{
+    input {
       box-shadow: none !important;
     }
   </style>
@@ -30,14 +30,15 @@
   <nav class="navbar bg-body-tertiary fixed-top shadow-sm py-0">
     <div class="container-fluid">
       <!-- Left Arrow Icon -->
-      <a class="navbar-brand" href="index.php">
+      <a class="navbar-brand" href="../../user/user_auth/index.php">
         <button class="btn btn-sm px-1">
           <i class="bi bi-arrow-left-short text-dark fs-1 fw-bold" style="font-size: 1.5rem;"></i>
         </button>
       </a>
 
       <!-- Navbar Brand Name Centered -->
-      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark" href="#">
+      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark"
+        href="../../user/user_auth/index.php">
         <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
         Interllux
       </a>
@@ -107,11 +108,59 @@
       <p>Already have an account? <a href="#" onclick="toggleForms()">Sign in</a></p>
     </form>
   </div>
+
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">Error</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalMessage"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="footer">
     <script src="../../assets/js/footer.js"></script>
   </div>
 
   <script src="../../assets/js/loginpage.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function toggleForms() {
+      document.getElementById('signInForm').style.display =
+        document.getElementById('signInForm').style.display === 'none' ? 'block' : 'none';
+      document.getElementById('signUpForm').style.display =
+        document.getElementById('signUpForm').style.display === 'none' ? 'block' : 'none';
+    }
+
+    document.getElementById('signUpForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('signUpEmail').value;
+      const password = document.getElementById('signUpPassword').value;
+      const modalMessage = document.getElementById('modalMessage');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+      if (!emailRegex.test(email)) {
+        modalMessage.textContent = 'Invalid email. Please include "@" and domain.';
+        new bootstrap.Modal(document.getElementById('errorModal')).show();
+      } else if (!passwordRegex.test(password)) {
+        modalMessage.textContent = 'Password must be 8+ characters with a special character.';
+        new bootstrap.Modal(document.getElementById('errorModal')).show();
+      } else {
+        // Simulate a successful sign-up and redirect to the sign-in form
+        toggleForms(); // Switch to the sign-in form
+        modalMessage.textContent = 'Sign-up successful! Please sign in.';
+        new bootstrap.Modal(document.getElementById('errorModal')).show();
+      }
+    });
+  </script>
 </body>
 
 </html>

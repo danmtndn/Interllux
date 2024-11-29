@@ -36,7 +36,7 @@
       </div>
 
       <div class="ms-4">
-        <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark " href="#">
+        <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark " href="../../user/user_auth/index.php">
           <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
           Interllux
         </a>
@@ -46,8 +46,7 @@
         <a class="text-dark text-decoration-none pt-0" style="margin-top: 3px;" href="../../user/user_auth/loginpage.php">
           <i class="bi bi-person fs-4"></i>
         </a>
-        <a href="#" class="text-decoration-none mx-3 pt-0" data-bs-toggle="offcanvas" data-bs-target="#cartPanel"
-          aria-controls="cartPanel">
+        <a href="../../user/order_management/add-to-cart.php" class="text-decoration-none mx-3 pt-0">
           <i class="bi bi-cart2 fs-5 text-dark"></i>
         </a>
         <a href="#" class="text-decoration-none mt-0" style="margin-top: 5px;" data-bs-toggle="collapse" data-bs-target="#searchCollapse"
@@ -90,33 +89,6 @@
         <li><a href="../../user/user_auth/contact-us.php" class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
         <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About Us</a></li>
       </ul>
-    </div>
-  </div>
-
-  <!-- Off-canvas Cart on the Right -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="cartPanel" aria-labelledby="cartPanelLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="cartPanelLabel">Cart</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <hr>
-    <div class="offcanvas-body">
-      <!-- Cart Item Example -->
-      <div class="cart-item">
-        <img src="../../assets/image/Balenciaga City Bag.png" alt="Product Image" width="70">
-        <div class="item-details">
-          <p class="item-name">Birkin 30 Graphite Matte Alligator in Gold Hardware Stamp X</p>
-          <p class="item-price">₱2,900,000.00</p>
-          <div class="item-quantity">
-            <button class="qty-btn">-</button>
-            <span>1</span>
-            <button class="qty-btn">+</button>
-          </div>
-          <a href="#" class="remove-item text-black">Remove</a>
-        </div>
-      </div>
-      <button id="checkout-button"><a href="../../user/checkout_payment/payment.php" class="checkout">Checkout • <p
-            class="text-center fw-normal m-0" id="total">₱2,900,000.00</p></a></button>
     </div>
   </div>
 

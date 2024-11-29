@@ -3,7 +3,7 @@ html {
 }
 
 .background-image {
-  background-image: url('../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg') !important;
+  background-image: url("../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg") !important;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -31,11 +31,10 @@ html {
 body {
   margin: 0;
   padding: 0;
-
 }
 
 .background-image {
-  background-image: url('../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg') !important;
+  background-image: url("../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg") !important;
   position: relative;
   background-size: cover;
   background-position: center;
@@ -66,7 +65,6 @@ body {
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);
@@ -95,14 +93,19 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.review-card img {
+  max-height: 200px !important;
+  max-width: 100% !important;
+}
+
 /* Card content styling */
 .card-body .stars {
-  color: #FFD700;
+  color: #ffd700;
 }
 
 .card-text {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

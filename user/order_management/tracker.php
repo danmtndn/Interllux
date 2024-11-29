@@ -68,7 +68,7 @@
       </div>
 
       <div class="ms-4">
-        <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark " href="#">
+        <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark " href="../../user/user_auth/index.php">
           <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
           Interllux
         </a>
