@@ -59,7 +59,7 @@
                         <p class="mb-3">Color: Black</p>
 
                         <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">
-                                <a href="details-to-rate.php" class="text-dark">
+                                <a href="details-cancelled_order.php" class="text-dark">
                                     View Order</u>
                             </a></button>
 

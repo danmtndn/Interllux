@@ -59,14 +59,14 @@
             <p class="mb-3">Color: Brown</p>
 
             <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">
-                <a href="details-to-rate.php" class="text-dark">
+                <a href="details-history.php" class="text-dark">
                   View Order
                 </a></u></button>
           </div>
 
 
           <div class="card-body p-0 pe-2 text-end price-info">
-            <p class="m-0 fw-bold">To Ship</p>
+            <p class="m-0 fw-bold">Delivered</p>
             <p class="m-0 mt-5 fw-bold">Php.1200</p>
           </div>
         </div>

@@ -61,7 +61,7 @@
             <p class="mb-3">Color: Brown</p>
 
             <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">
-                <a href="details-to-rate.php" class="text-dark">
+                <a href="details-delivered.php" class="text-dark">
                   View Order
                 </a></u></button>
           </div>
@@ -70,9 +70,10 @@
           <div class="card-body p-0 pe-2 text-end price-info">
             <p class="m-0 fw-bold">To Ship</p>
             <p class="m-0 mt-4 fw-bold">Php.1200</p>
-            <button type="button" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal"
-              data-bs-target="#confirmModal">
-              Order Complete
+
+            <button type="button" class="rturn btn btn-outline-secondary btn-sm mt-1"><a href="../../user/user_auth/contact-us.php #cancel-policy" class="text-decoration-none text-dark">Return/Refund</a></button>
+            <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal">
+              Order Received
             </button>
 
             <!-- Modal -->

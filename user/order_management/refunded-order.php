@@ -60,7 +60,7 @@
                         <p class="mb-3">Color: Brown</p>
 
                         <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">
-                                <a href="details-to-rate.php" class="text-dark">
+                                <a href="details-refunded.php" class="text-dark">
                                     View Order
                                 </a></u></button>
                     </div>

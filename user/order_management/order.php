@@ -29,7 +29,7 @@
     <script src="../../assets/js/navbar.js"></script>
   </div>
 
-  <div class="profile-container container-fluid py-5 mt-5">
+  <div class="profile-container container-fluid py-5 mt-5 text-dark" style="height: 200px;">
     <h5>Hi! Jorence</h5>
   </div>
 

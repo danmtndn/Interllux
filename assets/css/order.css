@@ -1,7 +1,6 @@
 /* Profile container background */
 .profile-container {
-  background: url("../../assets/image/profile-background.jpeg") no-repeat center
-    center;
+  background: url("../../assets/image/shopping-bag-cart.jpg") no-repeat center;
   background-size: cover;
 }
 

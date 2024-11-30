@@ -52,8 +52,7 @@
         </select>
 
         <!-- Filter by Brand Dropdown -->
-        <select id="brandFilter" class="form-select w-auto rounded-0 shadow-none border-black"
-          aria-label="Filter by Brand">
+        <select id="brandFilter" class="form-select w-auto rounded-0 shadow-none border-black" aria-label="Filter by Brand">
           <option value="all" selected>All Brands</option>
           <option value="Alma BB">Alma BB</option>
           <option value="Balenciaga">Balenciaga</option>
@@ -72,141 +71,156 @@
     <div class="row g-3 mt-5 pt-5" id="productGrid">
       <!-- Sample Card Structure, repeat as needed -->
       <div class="col-6 col-md-3 product-card" data-brand="Alma BB">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
+        <div class="card mb-3 rounded-0">
+          <a href="product_details.php" class="card-link nav-link text-dark">
             <img src="../../assets/image/Alma BB.png" class="card-img-top" alt="Alma BB">
             <div class="card-body">
               <h5 class="card-title" style="font-size: 14px;">Alma BB</h5>
               <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
               <p class="fw-semibold m-1">₱69,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
+          </a>
+          <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+        </div>
       </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Balenciaga">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Balenciaga City Bag.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Balenciaga</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱99,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
+    </div>
+    <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Balenciaga">
+
+      <div class="card mb-3 rounded-0">
+        <a href="product_details.php" class="card-link nav-link text-dark">
+          <img src="../../assets/image/Balenciaga City Bag.png" class="card-img-top" alt="Alma BB">
+          <div class="card-body">
+            <h5 class="card-title" style="font-size: 14px;">Balenciaga</h5>
+            <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+            <p class="fw-semibold m-1">₱99,999</p>
         </a>
+        <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
       </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Balmain">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Balmain B-Buzz.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Balmain</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱169,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Celine">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Celine Belt Bag.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Celine</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱39,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Chanel">
-        <a href="product_details.php" class="card-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Chanel Gabrielle.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Chanel</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱109,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Chloe">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Chloe Faye.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Chloe</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱29,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Burberry">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Burberry TB Bag.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Burberry</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱89,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Dior">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Dior Saddle Bag.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Dior</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱269,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Gucci">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Gucci Dionysus.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Gucci</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱569,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Hermes">
-        <a href="product_details.php" class="card-link nav-link">
-          <div class="card mb-3 rounded-0">
-            <img src="../../assets/image/Hermes Birkin 30.png" class="card-img-top" alt="Alma BB">
-            <div class="card-body">
-              <h5 class="card-title" style="font-size: 14px;">Hermes</h5>
-              <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-              <p class="fw-semibold m-1">₱169,999</p>
-              <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- Repeat cards as needed -->
     </div>
 
-    <div class="text-center mt-3">
-      <button id="seeMoreButton" class="btn btn-dark">See More</button>
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Balmain">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Balmain B-Buzz.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Balmain</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱169,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
     </div>
+  </div>
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Celine">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Celine Belt Bag.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Celine</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱39,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Chanel">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Chanel Gabrielle.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Chanel</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱109,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Chloe">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Chloe Faye.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Chloe</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱29,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Burberry">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Burberry TB Bag.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Burberry</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱89,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Dior">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Dior Saddle Bag.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Dior</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱269,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Gucci">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Gucci Dionysus.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Gucci</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱569,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+  </div>
+  <div class="col-6 col-md-3 product-card" id="productGrid" data-brand="Hermes">
+
+    <div class="card mb-3 rounded-0">
+      <a href="product_details.php" class="card-link nav-link text-dark">
+        <img src="../../assets/image/Hermes Birkin 30.png" class="card-img-top" alt="Alma BB">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 14px;">Hermes</h5>
+          <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
+          <p class="fw-semibold m-1">₱169,999</p>
+      </a>
+      <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+    </div>
+  </div>
+
+  </div>
+  <!-- Repeat cards as needed -->
+  </div>
+
+  <div class="text-center mt-3">
+    <button id="seeMoreButton" class="btn btn-dark">See More</button>
+  </div>
   </div>
 
   <div id="footer">
@@ -215,7 +229,7 @@
 
   <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const productCards = Array.from(document.querySelectorAll(".product-card"));
       const sortOptions = document.getElementById("sortOptions");
       const brandFilter = document.getElementById("brandFilter");
@@ -225,7 +239,7 @@
       let isExpanded = false;
 
       // Sorting Functionality
-      sortOptions.addEventListener("change", function () {
+      sortOptions.addEventListener("change", function() {
         let sortedCards;
 
         switch (sortOptions.value) {
@@ -246,7 +260,7 @@
       });
 
       // Brand Filtering Functionality
-      brandFilter.addEventListener("change", function () {
+      brandFilter.addEventListener("change", function() {
         const selectedBrand = brandFilter.value;
 
         productCards.forEach(card => {

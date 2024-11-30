@@ -8,7 +8,6 @@ body {
 }
 
 
-
 .background-image {
   background-image: url("../image/8dc5473fa91731c56a3d7c39e983c5fe.jpg") !important;
   position: relative;
@@ -94,6 +93,12 @@ body {
   object-fit: cover;
   /* Ensures the image fills the space without stretching */
 }
+
+.shopnow {
+  background-color: #ffffff15 !important;
+
+}
+
 
 .shopnow:hover {
   opacity: 70% !important;
