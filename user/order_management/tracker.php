@@ -67,7 +67,8 @@
       </a>
 
       <!-- Navbar Brand Name Centered -->
-      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark" href="../../user/user_auth/index.php">
+      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark"
+        href="../../user/user_auth/index.php">
         <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
         Interllux
       </a>
@@ -89,12 +90,18 @@
 
     <div class="offcanvas-body position-relative">
       <ul class="list-unstyled">
-        <li><a href="../../user/user_auth/index.php" class="text-dark text-decoration-none letter-spacing-1">Home</a></li>
-        <li><a href="../../user/product_catalog/product_catalog.php" class="text-dark text-decoration-none letter-spacing-1">Products</a></li>
-        <li><a href="../../user/order_management/review.php" class="text-dark text-decoration-none letter-spacing-1">Customer Reviews</a></li>
-        <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My Orders</a></li>
-        <li><a href="../../user/user_auth/contact-us.php" class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
-        <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About Us</a></li>
+        <li><a href="../../user/user_auth/index.php" class="text-dark text-decoration-none letter-spacing-1">Home</a>
+        </li>
+        <li><a href="../../user/product_catalog/product_catalog.php"
+            class="text-dark text-decoration-none letter-spacing-1">Products</a></li>
+        <li><a href="../../user/order_management/review.php"
+            class="text-dark text-decoration-none letter-spacing-1">Customer Reviews</a></li>
+        <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My
+            Orders</a></li>
+        <li><a href="../../user/user_auth/contact-us.php"
+            class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
+        <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About
+            Us</a></li>
       </ul>
     </div>
   </div>
@@ -189,6 +196,9 @@
             <p class="m-0 fw-bold">Waiting for Seller</p>
             <p class="m-0 mt-4">Quantity: ×1</p>
             <p class="m-0 mt-1 fw-bold">Php.900</p>
+            <a href="../../user/user_auth/contact-us.php #cancel-policy"><button type="button"
+                class="btn btn-sm btn-dark mt-2">Contact
+                Us</button></a>
           </div>
         </div>
       </div>

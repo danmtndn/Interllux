@@ -29,7 +29,8 @@
       </a>
 
       <!-- Navbar Brand Name Centered -->
-      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark" href="../../user/user_auth/index.php">
+      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark"
+        href="../../user/user_auth/index.php">
         <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
         Interllux
       </a>
@@ -53,7 +54,8 @@
       <!-- PRODUCT 1 -->
       <div class="col-12">
         <div class="card d-flex flex-row p-2">
-          <img src="../../assets/image/Alma BB.png" class="img-fluid" alt="Alma BB" style="width: 100px; height: 100px; object-fit: cover;">
+          <img src="../../assets/image/Alma BB.png" class="img-fluid" alt="Alma BB"
+            style="width: 100px; height: 100px; object-fit: cover;">
           <div class="card-body text-start p-0 ps-2 mt-2">
             <p class="product-name fw-bold mb-0">Alma BB</p>
             <p class="mb-3">Color: Brown</p>
@@ -67,7 +69,40 @@
 
           <div class="card-body p-0 pe-2 text-end price-info">
             <p class="m-0 fw-bold">To Ship</p>
-            <p class="m-0 mt-5 fw-bold">Php.1200</p>
+            <p class="m-0 mt-4 fw-bold">Php.1200</p>
+            <button type="button" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal"
+              data-bs-target="#confirmModal">
+              Order Complete
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body text-center">
+                    <!-- Centered Text -->
+                    Are you sure you have received this order?
+                    <p> Once confirmed, no refund or return will be allowed.</p>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <!-- Cancel Button -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <!-- Confirm Button -->
+                    <a href="../../user/order_management/tracker.php #to-rate" class="btn btn-dark">Confirm</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Include Bootstrap JS (Ensure It's Loaded) -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
           </div>
         </div>
       </div>
@@ -77,6 +112,8 @@
   <!-- FOOTER -->
   <div id="footer">
     <script src="../../assets/js/footer.js"></script>
+    <script src="../../assets/js/tracker.js"></script>
+
   </div>
 </body>
 

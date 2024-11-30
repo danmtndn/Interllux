@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
     <title>Contact Us - Interllux</title>
 </head>
 
@@ -30,7 +30,8 @@
             <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-whatsapp fs-2 me-3"></i>
-                    <a href="https://wa.me/yourwhatsappnumber" target="_blank" class="fs-5 text-dark">WhatsApp: (+63) 9161195710</a>
+                    <a href="https://wa.me/yourwhatsappnumber" target="_blank" class="fs-5 text-dark">WhatsApp: (+63)
+                        9161195710</a>
                 </div>
             </div>
 
@@ -47,7 +48,8 @@
             <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-envelope fs-2 me-3"></i>
-                    <a href="mailto:contact@interllux.com" target="_blank" class="fs-5 text-dark">Email: contact@interllux.com</a>
+                    <a href="mailto:contact@interllux.com" target="_blank" class="fs-5 text-dark">Email:
+                        contact@interllux.com</a>
                 </div>
             </div>
 
@@ -61,9 +63,12 @@
         </div>
 
         <!-- Cancellation, Return & Refund Process -->
-        <div class="mt-5">
-            <h3 class="text-center mb-4">How to Cancel an Order, Return an Item, or Request a Refund</h3>
-            <p class="mb-3">We want to make sure you're fully satisfied with your purchase. If for any reason you need
+        <div class="mt-5" id="cancel-policy">
+
+            <h3 class="text-center mb-4">How to Cancel an Order, Return an Item, or Request a Refund
+            </h3>
+            <p class="mb-5">We want to make sure you're fully satisfied with your purchase. If for
+                any reason you need
                 to cancel your order, return an item, or request a refund, please follow these steps:</p>
 
             <h5>Cancellation:</h5>

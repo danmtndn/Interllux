@@ -29,11 +29,13 @@
     <div class="container-fluid d-flex position-relative">
 
       <div class="d-flex">
-        <button class="navbar-toggler border-0 m-0 px-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideNav" aria-controls="sideNav">
+        <button class="navbar-toggler border-0 m-0 px-0 shadow-none" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#sideNav" aria-controls="sideNav">
           <span class="bi bi-filter-left fs-1 ms-1 ms-lg-0"></span>
         </button>
       </div>
-      <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark ms-lg-5 ps-lg-5" href="../../user/user_auth/index.php">
+      <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark ms-lg-5 ps-lg-5"
+        href="../../user/user_auth/index.php">
         <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24" class="ms-4">
         Interllux
       </a>
@@ -47,12 +49,13 @@
           </button>
           <div class="w-100 position-relative">
             <ul class="dropdown-menu dropdown-menu-center mt-3" style="left: 50%; transform: translateX(-50%);">
-              <li><a class="dropdown-item text-dark" href="../../user/order_management/account-details.php">My Account</a></li>
+              <li><a class="dropdown-item text-dark" href="../../user/order_management/account-details.php">My
+                  Account</a></li>
               <li><a class="dropdown-item text-dark" href="../../user/order_management/tracker.php">Orders</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item text-dark" href="loginpage.php">Log Out</a></li>
+              <li><a class="dropdown-item text-dark" href="../../user/user_auth/loginpage.php">Log Out</a></li>
             </ul>
           </div>
         </div>
@@ -64,7 +67,8 @@
           </button>
           <div class="w-100 position-relative">
             <ul class="dropdown-menu dropdown-menu-center mt-2" style="left: 50%; transform: translateX(-50%);">
-              <li><a class="dropdown-item text-dark" href="../../user/order_management/account-details.php">My Account</a></li>
+              <li><a class="dropdown-item text-dark" href="../../user/order_management/account-details.php">My
+                  Account</a></li>
               <li><a class="dropdown-item text-dark" href="../../user/order_management/tracker.php">Orders</a></li>
               <li>
                 <hr class="dropdown-divider">
@@ -79,7 +83,8 @@
         <a href="../../user/order_management/add-to-cart.php" class="text-decoration-none me-3 ms-2 pt-0">
           <i class="bi bi-cart2 fs-5 text-dark"></i>
         </a>
-        <a href="#" class="text-decoration-none mt-0" style="margin-top: 5px;" data-bs-toggle="collapse" data-bs-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse">
+        <a href="#" class="text-decoration-none mt-0" style="margin-top: 5px;" data-bs-toggle="collapse"
+          data-bs-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse">
           <i class="bi bi-search fs-5 text-dark"></i>
         </a>
       </div>
@@ -89,8 +94,11 @@
     <div class="collapse bg-body-light w-100 mt-1" id="searchCollapse">
       <div class="container-fluid p-2">
         <div class="input-group">
-          <input type="text" class="form-control border-secondary border-start-0 border-top-0 border-end-0 rounded-0 shadow-none" placeholder="Search here" aria-label="Search">
-          <button class="btn btn-close btn-sm shadow-none ms-2 mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#searchCollapse" aria-controls="searchCollapse" aria-label="Close"></button>
+          <input type="text"
+            class="form-control border-secondary border-start-0 border-top-0 border-end-0 rounded-0 shadow-none"
+            placeholder="Search here" aria-label="Search">
+          <button class="btn btn-close btn-sm shadow-none ms-2 mt-2" type="button" data-bs-toggle="collapse"
+            data-bs-target="#searchCollapse" aria-controls="searchCollapse" aria-label="Close"></button>
         </div>
       </div>
     </div>
@@ -108,12 +116,18 @@
 
     <div class="offcanvas-body position-relative">
       <ul class="list-unstyled">
-        <li><a href="../../user/user_auth/index.php" class="text-dark text-decoration-none letter-spacing-1">Home</a></li>
-        <li><a href="../../user/product_catalog/product_catalog.php" class="text-dark text-decoration-none letter-spacing-1">Products</a></li>
-        <li><a href="../../user/order_management/review.php" class="text-dark text-decoration-none letter-spacing-1">Customer Reviews</a></li>
-        <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My Orders</a></li>
-        <li><a href="../../user/user_auth/contact-us.php" class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
-        <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About Us</a></li>
+        <li><a href="../../user/user_auth/index.php" class="text-dark text-decoration-none letter-spacing-1">Home</a>
+        </li>
+        <li><a href="../../user/product_catalog/product_catalog.php"
+            class="text-dark text-decoration-none letter-spacing-1">Products</a></li>
+        <li><a href="../../user/order_management/review.php"
+            class="text-dark text-decoration-none letter-spacing-1">Customer Reviews</a></li>
+        <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My
+            Orders</a></li>
+        <li><a href="../../user/user_auth/contact-us.php"
+            class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
+        <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About
+            Us</a></li>
       </ul>
     </div>
   </div>
