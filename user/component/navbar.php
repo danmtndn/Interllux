@@ -36,48 +36,32 @@ if (isset($_SESSION['id'])) {
 </head>
 
 <body>
-  <nav class="navbar fixed-top bg-light shadow-sm">
-    <div class="container-fluid d-flex position-relative">
-      <div class="d-flex">
-        <button class="navbar-toggler border-0 m-0 px-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideNav" aria-controls="sideNav">
-          <span class="bi bi-filter-left fs-1 ms-1 ms-lg-0"></span>
-        </button>
-      </div>
-      <a class="navbar-brand me-0 dm-serif-display letter-spacing-1 text-dark ms-lg-5 ps-lg-5" href="../../user/user_auth/index.php">
-        <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24" class="ms-4">
+<nav class="navbar fixed-top bg-light shadow-sm">
+  <div class="container-fluid d-flex position-relative">
+    <div class="d-flex">
+      <button class="navbar-toggler border-0 m-0 px-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideNav" aria-controls="sideNav">
+        <span class="bi bi-filter-left fs-1 ms-1 ms-lg-0"></span>
+      </button>
+    </div>
+    
+    <div class="position-absolute w-100 text-center">
+      <a class="navbar-brand dm-serif-display letter-spacing-1 text-dark" href="../../user/user_auth/index.php">
+        <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
         Interllux
       </a>
+    </div>
 
-      <div class="d-flex justify-content-center align-items-center me-md-3 position-relative">
-        <!-- Desktop View Dropdown -->
-        <?php if ($first_name !== "Guest") : ?>
-          <div class="dropdown d-lg-block">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <?php echo htmlspecialchars($first_name); ?>
-            </button>
-            <div class="w-100 position-relative">
-              <ul class="dropdown-menu dropdown-menu-center mt-3" style="left: 50%; transform: translateX(-50%);">
-                <li><a class="dropdown-item text-dark" href="../../user/order_management/account-details.php">My Account</a></li>
-                <li><a class="dropdown-item text-dark" href="../../user/order_management/tracker.php">Orders</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item text-dark" href="../../user/user_auth/logout.php" id="logout">Log Out</a></li>
-              </ul>
-            </div>
-          </div>
-        <?php else : ?>
-          <a href="../../user/user_auth/loginpage.php" class="btn btn-dark" id="loginButton">Login</a>
-        <?php endif; ?>
-
-        <!-- Mobile View Dropdown -->
-        <div class="dropdown dropdown-mobile d-lg-none position-absolute mt-1" style="right: 55px;">
+    <div class="d-flex justify-content-center align-items-center me-md-3 position-relative">
+      <!-- Desktop View Dropdown -->
+      <?php if ($first_name !== "Guest") : ?>
+        <div class="dropdown d-lg-block">
           <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person fs-4"></i>
+            <?php echo htmlspecialchars($first_name); ?>
           </button>
           <div class="w-100 position-relative">
-            <ul class="dropdown-menu dropdown-menu-center mt-2" style="left: 50%; transform: translateX(-50%);">
-              <li><a class="dropdown-item text-dark" href="../../user/order_management/account-details.php">My Account</a></li>
+            <ul class="dropdown-menu dropdown-menu-center mt-3" style="left: 50%; transform: translateX(-50%);">
+            <li><a class="dropdown-item text-dark" href="../../user/order_management/dashboard.php">Dashboard</a></li>
+              <li><a class="dropdown-item text-dark" href="../../user/user_auth/account-details.php">My Account</a></li>
               <li><a class="dropdown-item text-dark" href="../../user/order_management/tracker.php">Orders</a></li>
               <li>
                 <hr class="dropdown-divider">
@@ -86,16 +70,47 @@ if (isset($_SESSION['id'])) {
             </ul>
           </div>
         </div>
+      <?php else : ?>
+        <a href="../../user/user_auth/loginpage.php" class="btn btn-dark" id="loginButton">Login</a>
+      <?php endif; ?>
 
-        <a href="../../user/order_management/add-to-cart.php" class="text-decoration-none me-3 ms-2 pt-0">
-          <i class="bi bi-cart2 fs-5 text-dark"></i>
+      <!-- Notification Bell Icon (Only shows when user is logged in) -->
+      <?php if ($first_name !== "Guest") : ?>
+        <a href="#" class="text-decoration-none mt-0 mx-3">
+          <i class="fa fa-bell-o fs-5 text-dark"></i>
         </a>
-        <a href="#" class="text-decoration-none mt-0" style="margin-top: 5px;" data-bs-toggle="collapse" data-bs-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse">
-          <i class="bi bi-search fs-5 text-dark"></i>
-        </a>
-      </div>
+      <?php endif; ?>
+
+      <!-- Cart Icon -->
+      <a href="../../user/order_management/add-to-cart.php" class="text-decoration-none mx-3 pt-0">
+        <i class="bi bi-cart2 fs-5 text-dark"></i>
+      </a>
+
+      <!-- Search Icon -->
+      <a href="#" class="text-decoration-none mt-0 mx-3" data-bs-toggle="collapse" data-bs-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse">
+        <i class="bi bi-search fs-5 text-dark"></i>
+      </a>
     </div>
-  </nav>
+  </div>
+
+  <!-- Collapsible Search Section -->
+  <div class="collapse bg-light w-100" id="searchCollapse" style="position: absolute; top: 56px; left: 0; z-index: 1050;">
+  <div class="container-fluid p-2">
+    <form action="../../user/product_catalog/search.php" method="get" class="input-group">
+      <input type="text"
+        name="search"
+        class="form-control border-secondary border-start-0 border-top-0 border-end-0 rounded-0 shadow-none"
+        placeholder="Search here" 
+        aria-label="Search"
+        required>
+      <button class="btn btn-dark ms-2 mt-0" type="submit" data-bs-toggle="collapse"
+        data-bs-target="#searchCollapse" aria-controls="searchCollapse" >Search </button>
+    </form>
+  </div>
+</div>
+
+</nav>
+
 
   <div class="offcanvas offcanvas-start" tabindex="-1" id="sideNav" aria-labelledby="sideNavLabel">
     <div class="offcanvas-header d-flex justify-content-center align-items-center">
@@ -111,12 +126,33 @@ if (isset($_SESSION['id'])) {
         <li><a href="../../user/user_auth/index.php" class="text-dark text-decoration-none letter-spacing-1">Home</a></li>
         <li><a href="../../user/product_catalog/product_catalog.php" class="text-dark text-decoration-none letter-spacing-1">Products</a></li>
         <li><a href="../../user/order_management/review.php" class="text-dark text-decoration-none letter-spacing-1">Customer Reviews</a></li>
-        <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My Orders</a></li>
+        <?php if ($first_name !== "Guest") : ?>
+          <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My Orders</a></li>
+        <?php endif; ?>
         <li><a href="../../user/user_auth/contact-us.php" class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
         <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About Us</a></li>
       </ul>
     </div>
   </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const closeSearchButton = document.querySelector('#closeSearch');
+    const searchCollapse = document.querySelector('#searchCollapse');
+
+    if (closeSearchButton) {
+      closeSearchButton.addEventListener('click', function() {
+        searchCollapse.classList.remove('show'); // Hide the search bar
+
+        const collapseInstance = bootstrap.Collapse.getInstance(searchCollapse);
+        if (collapseInstance) {
+          collapseInstance.hide();
+        }
+      });
+    }
+  });
+</script>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -53,9 +53,9 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-  <div id="navbar">
-    <script src="../../assets/js/navbar.js"></script>
-  </div>
+<?php
+  include '../../user/component/navbar.php';
+  ?>
 
   <!-- ######### LANDING PAGE SECTION ########-->
   <div class="container-fluid background-image">
@@ -106,9 +106,9 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <!-- YOU MAY ALSO LIKE CONTAINER -->
 
 
-  <div id="catalog">
-    <script src="../../assets/js/recommendation.js"></script>
-  </div>
+  <?php
+  include '../../user/order_management/recommendation.php';
+  ?>
 
   <div id="footer">
     <script src="../../assets/js/footer.js"></script>

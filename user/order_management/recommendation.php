@@ -27,6 +27,7 @@ GROUP BY
 ORDER BY 
   RANDOM()";
 
+// Use query() instead of prepare() as there are no parameters
 $stmt = $pdo->query($query);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -35,7 +36,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
@@ -66,17 +67,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     .sorting-bar {
-    position: sticky;
-    top: 60px; /* Adjust to match your header's height */
-    z-index: 1000; /* Ensure it's above other elements */
-    background-color: #f8f9fa; /* Ensure it's always visible with a background */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for separation */
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-}
-
+      position: sticky;
+      top: 60px; /* Adjust to match your header's height */
+      z-index: 1000; /* Ensure it's above other elements */
+      background-color: #f8f9fa; /* Ensure it's always visible with a background */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for separation */
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
   </style>
-
 </head>
 
 <body>
@@ -92,36 +91,34 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </div>
   <div class="container-fluid">
-
     <div class="row g-3 mt-3" id="productGrid">
-        <!--Displaying of fetched data-->
-    <div id="product-list" class="row">
-    <?php if (!empty($products)): ?>
-        <?php foreach (array_slice($products, 0, 4) as $product): ?>
+      <!--Displaying of fetched data-->
+      <div id="product-list" class="row">
+        <?php if (!empty($products)): ?>
+          <?php foreach (array_slice($products, 0, 4) as $product): ?>
             <div class="col-6 col-md-3 product-card" data-brand="<?= htmlspecialchars($product['brand']) ?>">
-                <div class="card mb-3 rounded-0">
+              <div class="card mb-3 rounded-0">
                 <a href="../product_catalog/product_details.php?product_id=<?= htmlspecialchars($product['product_id']) ?>" class="card-link nav-link text-dark">
-                      <img src="<?= htmlspecialchars($product['img_path']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-size: 14px;"><?= htmlspecialchars($product['name']) ?></h5>
-                            <p class="card-text"><?= htmlspecialchars($product['overview']) ?></p>
-                            <p class="fw-semibold m-1">₱<?= number_format($product['price'], 2) ?></p>
-                        </div>
+                  <img src="<?= htmlspecialchars($product['img_path']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
+                  <div class="card-body">
+                    <h5 class="card-title" style="font-size: 14px;"><?= htmlspecialchars($product['name']) ?></h5>
+                    <p class="card-text"><?= htmlspecialchars($product['overview']) ?></p>
+                    <p class="fw-semibold m-1">₱<?= number_format($product['price'], 2) ?></p>
+                  </div>
                 </a>
 
-                    <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-                </div>
+                <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+              </div>
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p class="col-12 text-center">No products found.</p>
-    <?php endif; ?>
-</div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p class="col-12 text-center">No products found.</p>
+        <?php endif; ?>
+      </div>
     </div>
 
     <div class="text-center mt-3">
-      <button id="seeMoreButton" class="btn btn-dark"><a href="../../user/product_catalog/product_catalog.php"
-          class="nav-link">See More</a></button>
+      <button id="seeMoreButton" class="btn btn-dark"><a href="../../user/product_catalog/product_catalog.php" class="nav-link">See More</a></button>
     </div>
   </div>
 

@@ -165,9 +165,9 @@ if ($product):
     <?php endif; ?>
 
 
-    <div id="catalog">
-        <script src="../../assets/js/recommendation.js"></script>
-    </div>
+    <?php
+  include '../../user/order_management/recommendation.php';
+  ?>
 
     <div id="footer">
         <script src="../../assets/js/footer.js"></script>

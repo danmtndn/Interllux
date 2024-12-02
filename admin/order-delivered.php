@@ -2,71 +2,95 @@
 <?php include '../database/dbconnect.php'; ?>
 
 <?php
-
 $search = $_GET['search'] ?? '';
-$page = $_GET['page'] ?? 1; // Default to the first page
-$results_per_page = 10; // Changes results per page
+$page = $_GET['page'] ?? 1;
+$results_per_page = 10; // Number of results per page
 $offset = ($page - 1) * $results_per_page;
-$date_filter = $_GET['date_filter'] ?? null;
+$selected_date_filter = $_GET['date_filter'] ?? 'Select Date'; // Date functionality
+$date_filter = '';
 
+// Define the search term (defaults to searching all if nothing entered)
+$search_term = '%' . ($search ?? '') . '%';
+
+if ($selected_date_filter != 'Select Date') {
+    switch ($selected_date_filter) {
+        case 'Today':
+            $date_filter = "AND o.delivered_date::date = CURRENT_DATE";
+            break;
+        case 'This Week':
+            $date_filter = "AND o.delivered_date >= CURRENT_DATE - INTERVAL '7 days'";
+            break;
+        case 'Last Week':
+            $date_filter = "AND o.delivered_date >= CURRENT_DATE - INTERVAL '14 days' AND o.delivered_date < CURRENT_DATE - INTERVAL '7 days'";
+            break;
+        case 'This Month':
+            $date_filter = "AND EXTRACT(MONTH FROM o.delivered_date) = EXTRACT(MONTH FROM CURRENT_DATE) 
+                            AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
+            break;
+        case 'Last Month':
+            $date_filter = "AND EXTRACT(MONTH FROM o.delivered_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') 
+                            AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month')";
+            break;
+        case 'This Quarter':
+            $date_filter = "AND EXTRACT(QUARTER FROM o.delivered_date) = EXTRACT(QUARTER FROM CURRENT_DATE) 
+                            AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
+            break;
+        case 'This Year':
+            $date_filter = "AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
+            break;
+    }
+}
 
 try {
     // Count total rows
-    $count_query = 
-    "SELECT COUNT(DISTINCT o.orders_id) AS total
-    FROM orders o
-    JOIN users u ON o.users_id = u.id
-    JOIN orders_item oi ON o.orders_id = oi.orders_id
-    JOIN product p ON oi.product_id = p.product_id
-    WHERE o.delivered_date IS NOT NULL
-      AND o.order_status = 'completed'
-      AND (
-          CONCAT(u.user_firstname, ' ', u.user_lastname) ILIKE :search OR
-          o.orders_id::TEXT = :exact_search
-      );
+    $count_query = "
+        SELECT COUNT(DISTINCT o.orders_id) AS total
+        FROM orders o
+        JOIN users u ON o.users_id = u.id
+        JOIN orders_item oi ON o.orders_id = oi.orders_id
+        JOIN product p ON oi.product_id = p.product_id
+        WHERE o.delivered_date IS NOT NULL
+          AND o.order_status = 'completed'
+          AND (
+              CONCAT(u.user_firstname, ' ', u.user_lastname) ILIKE :search OR
+              o.orders_id::TEXT = :exact_search
+          );
     ";
     $count_stmt = $pdo->prepare($count_query);
-    $count_stmt->bindValue(':search', '%' . $search . '%');
+    $count_stmt->bindValue(':search', $search_term);
     $count_stmt->bindValue(':exact_search', $search);
     $count_stmt->execute();
     $total_results = $count_stmt->fetchColumn();
 
     // Fetch paginated results
-    $query = 
-    "SELECT o.orders_id,
-           CONCAT(u.user_firstname, ' ', u.user_lastname) AS customer_name,
-           STRING_AGG(p.name || ' (Qty: ' || oi.quantity || 'x)', ', ') AS order_items,
-           o.total_amount,
-           o.delivered_date,
-           o.tracking_number,
-           o.completed_date
-    FROM 
-        orders o
-    JOIN 
-        users u ON o.users_id = u.id
-    JOIN 
-        orders_item oi ON o.orders_id = oi.orders_id
-    JOIN 
-        product p ON oi.product_id = p.product_id
-    WHERE 
-        o.delivered_date IS NOT NULL
-        AND o.order_status = 'completed'
-        AND (
-            CONCAT(u.user_firstname, ' ', u.user_lastname) ILIKE :search OR
-            o.orders_id::TEXT = :exact_search
-        )
-    GROUP BY 
-        o.orders_id, u.user_firstname, u.user_lastname, o.total_amount, o.delivered_date, o.tracking_number, o.completed_date
-    ORDER BY 
-        o.delivered_date ASC
-    LIMIT :results_per_page OFFSET :offset;
+    $query = "
+        SELECT o.orders_id,
+               CONCAT(u.user_firstname, ' ', u.user_lastname) AS customer_name,
+               STRING_AGG(p.name || ' (Qty: ' || oi.quantity || 'x)', ', ') AS order_items,
+               o.total_amount,
+               o.delivered_date,
+               o.tracking_number
+        FROM orders o
+        JOIN users u ON o.users_id = u.id
+        JOIN orders_item oi ON o.orders_id = oi.orders_id
+        JOIN product p ON oi.product_id = p.product_id
+        WHERE o.delivered_date IS NOT NULL
+          AND o.order_status = 'completed'
+          AND (
+              CONCAT(u.user_firstname, ' ', u.user_lastname) ILIKE :search OR
+              o.orders_id::TEXT = :exact_search
+          )
+          $date_filter
+        GROUP BY o.orders_id, u.user_firstname, u.user_lastname, o.total_amount, o.delivered_date, o.tracking_number
+        ORDER BY o.delivered_date ASC
+        LIMIT :results_per_page OFFSET :offset;
     ";
-
+    
     $stmt = $pdo->prepare($query);
-    $stmt->bindValue(':search', '%' . $search . '%');
+    $stmt->bindValue(':search', $search_term);
     $stmt->bindValue(':exact_search', $search);
-    $stmt->bindValue(':results_per_page', (int)$results_per_page, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -87,21 +111,23 @@ try {
         </div>
 
         <div class="col-12 col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
-          <div class="dropdown">
-            <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Select Date</button>
-
-            <ul class="dropdown-menu border border-dark-subtle" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Week</a></li>
-              <li><a class="dropdown-item" href="#">Last Week</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">Last Month</a></li>
-              <li><a class="dropdown-item" href="#">This Quarter</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        <div class="dropdown">
+                        <!-- Set the button label dynamically  -->
+                        <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo htmlspecialchars($selected_date_filter); ?>
+                        </button>
+                        <ul class="dropdown-menu border border-dark-subtle" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="?date_filter=Today">Today</a></li>
+                            <li><a class="dropdown-item" href="?date_filter=This Week">This Week</a></li>
+                            <li><a class="dropdown-item" href="?date_filter=Last Week">Last Week</a></li>
+                            <li><a class="dropdown-item" href="?date_filter=This Month">This Month</a></li>
+                            <li><a class="dropdown-item" href="?date_filter=Last Month">Last Month</a></li>
+                            <li><a class="dropdown-item" href="?date_filter=This Quarter">This Quarter</a></li>
+                            <li><a class="dropdown-item" href="?date_filter=This Year">This Year</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
       <div class="row align-items-center mt-3">
         <div class="search-bar col-auto">
@@ -129,20 +155,19 @@ try {
         <tbody class="fw-light">
           <?php if (!empty($orders)): ?>
             <?php foreach ($orders as $order): ?>
-              <?php $padded_id = str_pad($order['orders_id'], 3, '0', STR_PAD_LEFT); ?>
               <tr style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#customer-modal">
-                <td><?php echo htmlspecialchars($padded_id); ?></td>
+                <td><?php echo htmlspecialchars($order['orders_id']); ?></td>
                 <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
                 <td><?php echo htmlspecialchars($order['order_items']); ?></td>
                 <td>₱<?php echo number_format($order['total_amount'], 2); ?></td>
                 <td><?php echo htmlspecialchars($order['delivered_date']); ?></td>
                 <td><?php echo htmlspecialchars($order['tracking_number']); ?></td>
-                <td><?php echo htmlspecialchars($order['completed_date']); ?></td>
+                <td><?php echo htmlspecialchars($order['delivered_date']); ?></td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="7" class="text-center">No orders found.</td>
+              <td colspan="7" class="text-center">No delivered orders found.</td>
             </tr>
           <?php endif; ?>
         </tbody>
@@ -172,6 +197,4 @@ try {
 </tfoot>
       </table>
     </div>
-  </section>
-</main>
     <?php include '../partials/admin-footer.php'; ?>

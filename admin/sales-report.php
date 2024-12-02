@@ -1,79 +1,8 @@
-<?php
-if ($reportType == 'sales') {
-    try {
-        // Fetch sales overview
-        $overviewQuery = "SELECT 
-            COUNT(*) as total_orders,
-            SUM(total_amount) as total_sales,
-            SUM(shipping_cost) as total_shipping_cost,
-            SUM(CASE WHEN free_shipping = true THEN 1 ELSE 0 END) as free_shipping_orders,
-            SUM(sub_amount) as total_revenue,
-            SUM((SELECT SUM(quantity) FROM orders_item WHERE orders_item.orders_id = orders.orders_id)) as total_quantity_sold,
-            SUM(CASE WHEN order_status = 'cancelled' THEN 1 ELSE 0 END) as total_cancelled,
-            SUM(CASE WHEN order_status = 'return/refund' THEN 1 ELSE 0 END) as total_return_refund
-        FROM orders
-        WHERE order_date BETWEEN :start_date AND :end_date";
-        $stmt = $pdo->prepare($overviewQuery);
-        $stmt->bindParam(':start_date', $startDate, PDO::PARAM_STR);
-        $stmt->bindParam(':end_date', $endDate, PDO::PARAM_STR);
-        $stmt->execute();
-        $overview = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Fetch sales breakdown by product
-        $salesBreakdownQuery = "SELECT 
-            p.product_id, p.name, SUM(oi.quantity) as quantity_sold, 
-            p.price as unit_price, SUM(oi.item_price) as total_amount
-        FROM orders_item oi
-        JOIN product p ON oi.product_id = p.product_id
-        JOIN orders o ON oi.orders_id = o.orders_id
-        WHERE o.order_date BETWEEN :start_date AND :end_date
-        GROUP BY p.product_id
-        LIMIT :limit OFFSET :offset";
-        $stmt = $pdo->prepare($salesBreakdownQuery);
-        $stmt->bindParam(':start_date', $startDate, PDO::PARAM_STR);
-        $stmt->bindParam(':end_date', $endDate, PDO::PARAM_STR);
-        $stmt->bindParam(':limit', $itemsPerPage, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        $salesBreakdownResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch transaction summary
-        $transactionSummaryQuery = "SELECT 
-            transac_type, COUNT(*) as count, SUM(transac_total_amount) as total_amount
-        FROM transaction
-        WHERE transac_date BETWEEN :start_date AND :end_date
-        GROUP BY transac_type
-        LIMIT :limit OFFSET :offset";
-        $stmt = $pdo->prepare($transactionSummaryQuery);
-        $stmt->bindParam(':start_date', $startDate, PDO::PARAM_STR);
-        $stmt->bindParam(':end_date', $endDate, PDO::PARAM_STR);
-        $stmt->bindParam(':limit', $itemsPerPage, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        $transactionSummaryResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch return/refund details
-        $returnRefundQuery = "SELECT 
-            o.orders_id, t.reason, t.return_date, t.transac_total_amount as refund_amount
-        FROM transaction t
-        JOIN orders o ON t.orders_id = o.orders_id
-        WHERE t.transac_type IN ('return', 'refund') AND t.transac_date BETWEEN :start_date AND :end_date
-        LIMIT :limit OFFSET :offset";
-        $stmt = $pdo->prepare($returnRefundQuery);
-        $stmt->bindParam(':start_date', $startDate, PDO::PARAM_STR);
-        $stmt->bindParam(':end_date', $endDate, PDO::PARAM_STR);
-        $stmt->bindParam(':limit', $itemsPerPage, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        $returnRefundResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
-<div id="sales-option">
+<div id="sales-option" style="<?php echo ($reportType == 'sales') ? 'display: block;' : 'display: none;'; ?>">
     <div class="content p-4 pt-0 mt-0">
         <div class="col-12 col-md-6">
-            <p class="fw-bold fs-2 mb-0"><?php echo date('F j, Y', strtotime($startDate)); ?> -
-                <?php echo date('F j, Y', strtotime($endDate)); ?></p>
-            <p class="fw-light fs-4 mb-0">Report Generated: <?php echo date('F j, Y'); ?></p>
+            <p class="fw-bold fs-2 mb-0">October 1, 2024 - October 31, 2024</p>
+            <p class="fw-light fs-4 mb-0">Report Generated: November 10, 2024</p>
         </div>
 
         <p class="fw-bold mt-2 mb-0 fs-2">Sales Overview:</p>
@@ -83,7 +12,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Total Orders:</p>
-                            <p class="fs-2 fw-bold m-0"><?php echo $overview['total_orders']; ?></p>
+                            <p class="fs-2 fw-bold m-0">4</p>
                         </div>
                     </div>
                 </div>
@@ -91,7 +20,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Total Sales:</p>
-                            <p class="fs-2 fw-bold m-0">₱<?php echo number_format($overview['total_sales'], 2); ?></p>
+                            <p class="fs-2 fw-bold m-0">₱135,000.00</p>
                         </div>
                     </div>
                 </div>
@@ -99,8 +28,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Total Shipping Cost:</p>
-                            <p class="fs-2 fw-bold m-0">
-                                ₱<?php echo number_format($overview['total_shipping_cost'], 2); ?></p>
+                            <p class="fs-2 fw-bold m-0">₱300</p>
                         </div>
                     </div>
                 </div>
@@ -108,7 +36,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Free Shipping Orders:</p>
-                            <p class="fs-2 fw-bold m-0"><?php echo $overview['free_shipping_orders']; ?></p>
+                            <p class="fs-2 fw-bold m-0">1</p>
                         </div>
                     </div>
                 </div>
@@ -117,8 +45,8 @@ if ($reportType == 'sales') {
                 <div class="col-md-12 col-sm-12 col-lg-3">
                     <div class="card p-4 m-3">
                         <div class="card-info">
-                            <p class="fw-light m-0">Total Revenue:</p>
-                            <p class="fs-2 fw-bold m-0">₱<?php echo number_format($overview['total_revenue'], 2); ?></p>
+                            <p class="fw-light m-0">Total Reveneu:</p>
+                            <p class="fs-2 fw-bold m-0">₱160,000</p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +54,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Total Quantity Sold:</p>
-                            <p class="fs-2 fw-bold m-0"><?php echo $overview['total_quantity_sold']; ?></p>
+                            <p class="fs-2 fw-bold m-0">5</p>
                         </div>
                     </div>
                 </div>
@@ -134,7 +62,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Total Cancel:</p>
-                            <p class="fs-2 fw-bold m-0"><?php echo $overview['total_cancelled']; ?></p>
+                            <p class="fs-2 fw-bold m-0">0</p>
                         </div>
                     </div>
                 </div>
@@ -142,7 +70,7 @@ if ($reportType == 'sales') {
                     <div class="card p-4 m-3">
                         <div class="card-info">
                             <p class="fw-light m-0">Total Return/Refund:</p>
-                            <p class="fs-2 fw-bold m-0"><?php echo $overview['total_return_refund']; ?></p>
+                            <p class="fs-2 fw-bold m-0">1</p>
                         </div>
                     </div>
                 </div>
@@ -165,16 +93,24 @@ if ($reportType == 'sales') {
                 </tr>
             </thead>
             <tbody class="fw-light">
-                <?php foreach ($salesBreakdownResult as $row): ?>
                 <tr>
-                    <td><?php echo $row['product_id']; ?></td>
-                    <td><?php echo htmlspecialchars($row['name']); ?></td>
-                    <td><?php echo $row['quantity_sold']; ?></td>
-                    <td>₱<?php echo number_format($row['unit_price'], 2); ?></td>
-                    <td>₱<?php echo number_format($row['total_amount'], 2); ?></td>
+                    <td>1001</td>
+                    <td>Mini Frances Leather Handbag</td>
+                    <td>3</td>
+                    <td>350,000</td>
+                    <td>350,000</td>
                 </tr>
-                <?php endforeach; ?>
             </tbody>
+            <tfoot class="fw-light">
+                <tr>
+                    <td colspan="5">
+                        <div class="d-flex justify-content-between small">
+                            <span>Showing 1 to 1 of 1 results</span>
+                            <span> Next <i class="fa-solid fa-chevron-right fa-2xs" style="color: #000000;"></i></span>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
@@ -186,19 +122,27 @@ if ($reportType == 'sales') {
             <thead>
                 <tr>
                     <th scope="col">TRANSACTION TYPE</th>
-                    <th scope="col">COUNT</th>
+                    <th scope="col">NAME OF TRANSACTION</th>
                     <th scope="col">TOTAL AMOUNT</th>
                 </tr>
             </thead>
             <tbody class="fw-light">
-                <?php foreach ($transactionSummaryResult as $row): ?>
                 <tr>
-                    <td><?php echo ucfirst(htmlspecialchars($row['transac_type'])); ?></td>
-                    <td><?php echo $row['count']; ?></td>
-                    <td>₱<?php echo number_format($row['total_amount'], 2); ?></td>
+                    <td>Payment</td>
+                    <td>---</td>
+                    <td>₱ 200,000</td>
                 </tr>
-                <?php endforeach; ?>
             </tbody>
+            <tfoot class="fw-light">
+                <tr>
+                    <td colspan="3">
+                        <div class="d-flex justify-content-between small">
+                            <span>Showing 1 to 1 of 1 results</span>
+                            <span> Next <i class="fa-solid fa-chevron-right fa-2xs" style="color: #000000;"></i></span>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
@@ -216,21 +160,23 @@ if ($reportType == 'sales') {
                 </tr>
             </thead>
             <tbody class="fw-light">
-                <?php foreach ($returnRefundResult as $row): ?>
                 <tr>
-                    <td><?php echo $row['orders_id']; ?></td>
-                    <td><?php echo htmlspecialchars($row['reason']); ?></td>
-                    <td><?php echo $row['return_date']; ?></td>
-                    <td>₱<?php echo number_format($row['refund_amount'], 2); ?></td>
+                    <td>ORD010</td>
+                    <td>Changed my mind</td>
+                    <td>2024-10-30</td>
+                    <td>₱ 200,000</td>
                 </tr>
-                <?php endforeach; ?>
             </tbody>
+            <tfoot class="fw-light">
+                <tr>
+                    <td colspan="4">
+                        <div class="d-flex justify-content-between small">
+                            <span>Showing 1 to 1 of 1 results</span>
+                            <span> Next <i class="fa-solid fa-chevron-right fa-2xs" style="color: #000000;"></i></span>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
-<?php
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
-?>

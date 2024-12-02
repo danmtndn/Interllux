@@ -12,7 +12,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // If connection is successful
-    echo "Connected to the Supabase database successfully!";
+    // echo "Connected to the Supabase database successfully!";
 } catch (PDOException $e) {
     // If connection fails
     echo "Connection failed: " . $e->getMessage();

@@ -94,8 +94,8 @@ try {
 
     $stmt = $pdo->prepare($query);
     $stmt->bindValue(':search', '%' . $search . '%');
-    $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':results_per_page', (int)$results_per_page, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 
     // Bind date filter values if present
     if ($start_date && $end_date) {
@@ -123,30 +123,15 @@ try {
                 </div>
                 <div class="col-12 col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
                     <div class="dropdown">
-                        <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button"
-                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Select Date</button>
+                        <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Select Date</button>
                         <ul class="dropdown-menu border border-dark-subtle" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=today">Today</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_week">This
-                                    Week</a></li>
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=last_week">Last
-                                    Week</a></li>
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_month">This
-                                    Month</a></li>
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=last_month">Last
-                                    Month</a></li>
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_quarter">This
-                                    Quarter</a></li>
-                            <li><a class="dropdown-item"
-                                    href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_year">This
-                                    Year</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=today">Today</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_week">This Week</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=last_week">Last Week</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_month">This Month</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=last_month">Last Month</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_quarter">This Quarter</a></li>
+                            <li><a class="dropdown-item" href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page ?>&date_filter=this_year">This Year</a></li>
                         </ul>
                     </div>
                 </div>
@@ -155,8 +140,7 @@ try {
             <div class="row align-items-center mt-3">
                 <div class="search-bar col-auto">
                     <form action="" method="get" class="d-flex">
-                        <input type="text" name="search" class="form-control me-2" placeholder="Type your search here"
-                            value="<?= htmlspecialchars($search) ?>" style="width: 280px;">
+                        <input type="text" name="search" class="form-control me-2" placeholder="Type your search here" value="" style="width: 280px;">
                         <button type="submit" class="btn btn-dark"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </div>
@@ -164,162 +148,62 @@ try {
         </div>
 
         <div class="content table-responsive p-4 pt-2">
-            <table class="table table-hover fs-6" id="accounts-table">
+            <table class="table table-hover fs-6">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">FIRST NAME</th>
-                        <th scope="col">LAST NAME</th>
-                        <th scope="col">EMAIL</th>
-                        <th scope="col">DATE CREATED</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Date Created</th>
                     </tr>
                 </thead>
                 <tbody class="fw-light">
                     <?php if (!empty($users)): ?>
-                    <?php foreach ($users as $user): ?>
-                    <tr style="cursor: pointer;" data-user-id="<?= htmlspecialchars($user['id']) ?>">
-                        <td><?= htmlspecialchars($user['id']) ?></td>
-                        <td><?= htmlspecialchars($user['user_firstname']) ?></td>
-                        <td><?= htmlspecialchars($user['user_lastname']) ?></td>
-                        <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td><?= htmlspecialchars($user['date_created']) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
+                        <?php foreach ($users as $user): ?>
+                            <tr style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#customer-modal">
+                                <td><?php echo htmlspecialchars($user['id']); ?></td>
+                                <td><?php echo htmlspecialchars($user['user_firstname']); ?></td>
+                                <td><?php echo htmlspecialchars($user['user_lastname']); ?></td>
+                                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                <td><?php echo htmlspecialchars($user['date_created']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                     <?php else: ?>
-                    <tr>
-                        <td colspan="5" class="text-center">No users found.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" class="text-center">No users found.</td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
-                <tfoot class="fw-light">
-                    <tr>
-                        <td colspan="5">
-                            <div class="d-flex justify-content-between small">
-                                <span>Showing <?= $offset + 1 ?> to
-                                    <?= min($offset + $results_per_page, $total_results) ?> of <?= $total_results ?>
-                                    results</span>
-                                <span>
-                                    <?php if ($page > 1): ?>
-                                    <a
-                                        href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page - 1 ?>&date_filter=<?= htmlspecialchars($date_filter) ?>">Previous</a>
-                                    <?php endif; ?>
-                                    <?php if ($page < $total_pages): ?>
-                                    <a
-                                        href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page + 1 ?>&date_filter=<?= htmlspecialchars($date_filter) ?>">Next</a>
-                                    <?php endif; ?>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
+            <tfoot class="fw-light">
+                <tr>
+                    <td colspan="12">
+                        <div class="d-flex justify-content-between small">
+                            <span>
+                                Showing 
+                                <?= $offset + 1 ?> 
+                                to 
+                                <?= min($offset + $results_per_page, $total_results) ?> 
+                                of <?= $total_results ?> results
+                            </span>
+                            <span>
+                                <?php if ($page > 1): ?>
+                                    <a href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page - 1 ?>&date_filter=<?= htmlspecialchars($date_filter) ?>">Previous</a>
+                                <?php endif; ?>
+                                <span> | </span>
+                                <?php if ($page < $total_pages): ?>
+                                    <a href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page + 1 ?>&date_filter=<?= htmlspecialchars($date_filter) ?>">Next</a>
+                                <?php endif; ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
             </table>
         </div>
     </section>
 </main>
 
-<!-- User details Modal -->
-<div class="modal fade" id="user-modal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="false">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header" style="border-bottom: none;">
-                <h5 class="modal-title fw-bold fs-3" id="userModalLabel">User Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body pt-0">
-                <div class="container">
-                    <p class="my-0" id="user-first-name"><strong>First Name:</strong> <span></span></p>
-                    <p class="my-0" id="user-last-name"><strong>Last Name:</strong> <span></span></p>
-                    <p class="my-0" id="user-email"><strong>Email:</strong> <span></span></p>
-                    <p class="my-0" id="user-phone"><strong>Phone Number:</strong> <span></span></p>
-                    <p class="my-0" id="user-date-created"><strong>Date Created:</strong> <span></span></p>
-                </div>
-
-                <h5 class="mt-4">Past Orders:</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered" style="min-width: 1000px;">
-                        <thead>
-                            <tr>
-                                <th scope="col">Order Number</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total Amount</th>
-                                <th scope="col">Order Date</th>
-                                <th scope="col">Delivered Date</th>
-                                <th scope="col">Order Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="past-orders">
-                            <!-- Past orders will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const userRows = document.querySelectorAll('#accounts-table tbody tr');
-    const userModal = new bootstrap.Modal(document.getElementById('user-modal'));
-
-    userRows.forEach(row => {
-        row.addEventListener('click', function() {
-            const userId = this.getAttribute('data-user-id');
-            fetchUserDetails(userId);
-        });
-    });
-
-    function fetchUserDetails(userId) {
-        fetch(`get-user-details.php?id=${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateUserModal(data.user, data.orders);
-                    userModal.show();
-                } else {
-                    alert('Error fetching user details');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while fetching user details');
-            });
-    }
-
-    function updateUserModal(user, orders) {
-        document.querySelector('#user-first-name span').textContent = user.user_firstname;
-        document.querySelector('#user-last-name span').textContent = user.user_lastname;
-        document.querySelector('#user-email span').textContent = user.email;
-        document.querySelector('#user-phone span').textContent = user.phone_num || '---';
-        document.querySelector('#user-date-created span').textContent = user.date_created;
-
-        const pastOrdersBody = document.getElementById('past-orders');
-        pastOrdersBody.innerHTML = '';
-
-        if (orders.length === 0) {
-            pastOrdersBody.innerHTML = '<tr><td colspan="7" class="text-center">No orders found</td></tr>';
-        } else {
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.orders_id}</td>
-                    <td>${order.product_name}</td>
-                    <td>${order.quantity}</td>
-                    <td>₱${parseFloat(order.total_amount).toFixed(2)}</td>
-                    <td>${order.order_date}</td>
-                    <td>${order.delivered_date || '---'}</td>
-                    <td>${order.order_status}</td>
-                `;
-                pastOrdersBody.appendChild(row);
-            });
-        }
-    }
-});
-</script>
-
-<?php include '../partials/admin-footer.php'; ?>
+<?php
+include '../partials/admin-footer.php';
+?>
