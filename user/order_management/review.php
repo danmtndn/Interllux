@@ -1,17 +1,38 @@
+<?php
+include '../../database/dbconnect.php'; // Include database connection
+
+// Fetch reviews and related data
+$query = "SELECT r.date_created,
+                r.comment,
+                u.user_firstname AS customer_name,
+                p.name AS product_name,
+                img.img_path AS product_image
+        FROM reviews r
+        INNER JOIN users u ON r.users_id = u.id
+        INNER JOIN orders o ON r.orders_id = o.orders_id
+        INNER JOIN orders_item oi ON o.orders_id = oi.orders_id
+        INNER JOIN product p ON oi.product_id = p.product_id
+        INNER JOIN LATERAL (
+            SELECT img_path 
+            FROM img
+            WHERE product_id = p.product_id 
+            ORDER BY img_id ASC 
+            LIMIT 1 OFFSET 1 -- Get the 2nd image
+        ) img ON TRUE
+        ORDER BY r.date_created DESC";
+
+$stmt = $pdo->query($query);
+$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
-
-    <!-- BOOTSTRAP ICON LINK -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <title>Customer Reviews</title>
-
     <style>
         .review-header {
             background-color: #f8f9fa;
@@ -21,35 +42,10 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        #reviewForm {
-            display: none;
-            max-height: 0;
-            padding: 0;
-            overflow: hidden;
-            transition: all 10s ease-in-out;
-        }
-
-        #reviewForm.show {
-            display: block;
-            max-height: 1000px;
-            padding: 20px;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .btn-container button {
-            width: 48%;
-        }
-
         img.card-img-top {
             width: 100%;
             height: 200px;
-            /* Adjust as needed */
             object-fit: contain;
-            /* Show full image without cropping */
         }
 
         @media (max-width: 768px) {
@@ -74,126 +70,21 @@
         </div>
     </div>
 
-
     <div class="container mt-5">
         <div class="row">
-            <!-- 1ST CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Classic Flap Bag.png" class="card-img-top" alt="Classic Flap Bag">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Dhennis C.</h5>
-                        <p class="fw-bold">Classic Flap Bag</p>
-                        <p class="card-text">Great value for the money! This product has been super helpful, and I’m
-                            really happy with
-                            it.</p>
-                        <p class="card-text"><strong>Date: </strong> 2024-09-04</p>
+            <?php foreach ($reviews as $review): ?>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <img src="<?= htmlspecialchars($review['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($review['product_name']) ?>">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mt-2"><?= htmlspecialchars($review['customer_name']) ?></h5>
+                            <p class="fw-bold"><?= htmlspecialchars($review['product_name']) ?></p>
+                            <p class="card-text"><?= htmlspecialchars($review['comment']) ?></p>
+                            <p class="card-text"><strong>Date: </strong> <?= htmlspecialchars($review['date_created']) ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 2ND CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Alma BB.png" class="card-img-top" alt="Alma BB">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Selwyn G.</h5>
-                        <p class="fw-bold">Alma BB</p>
-                        <p class="card-text">This product is absolutely amazing! The quality is fantastic...</p>
-                        <p class="card-text"><strong>Date: </strong> 2024-09-16</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3RD CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Dior Book Tote.png" class="card-img-top" alt="Dior Book Tote">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Jorence M.</h5>
-                        <p class="fw-bold">Dior Book Tote</p>
-                        <p class="card-text">Better than I expected! Service was great and the product is in good shape.
-                        </p>
-                        <p class="card-text"><strong>Date: </strong> 2024-09-28</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4TH CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Gucci Marmont Matelassé.png" class="card-img-top" alt="Gucci Marmont Matelassé">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Orlando D.</h5>
-                        <p class="fw-bold">Gucci Marmont Matelassé</p>
-                        <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d
-                            recommend it
-                        </p>
-                        <p class="card-text"><strong>Date:</strong> 2024-10-05</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5TH CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Bottega Veneta Cassette.png" class="card-img-top" alt="Bottega Veneta Cassette">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Satria C.</h5>
-                        <p class="fw-bold">Bottega Veneta Cassette</p>
-                        <p class="card-text">Absolutely love this product! It’s exactly what I needed and works
-                            perfectly. Will
-                            definitely buy again
-                        </p>
-                        <p class="card-text"><strong>Date: </strong> 2024-10-20</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6TH CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Chanel Boy Bag.png" class="card-img-top" alt="Chanel Boy Bag">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Lorelie D.</h5>
-                        <p class="fw-bold">Channel Boy Bag</p>
-                        <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d
-                            recommend it
-                        </p>
-                        <p class="card-text"><strong>Date: </strong> 2024-10-24</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7TH CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Prada Nylon Backpack.png" class="card-img-top" alt="Chanel Boy Bag">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Lester M.</h5>
-                        <p class="fw-bold">Prada Nylon Backpack</p>
-                        <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d
-                            recommend it
-                        </p>
-                        <p class="card-text"><strong>Date: </strong> 2024-10-26</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8TH CARD -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="../../assets/image/Hermes Birkin 30.png" class="card-img-top" alt="Chanel Boy Bag">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mt-2">Lester M.</h5>
-                        <p class="fw-bold">Prada Nylon Backpack</p>
-                        <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d
-                            recommend it
-                        </p>
-                        <p class="card-text"><strong>Date: </strong> 2024-10-26</p>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -202,20 +93,6 @@
     </div>
 
     <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
-    <script>
-        document.getElementById('toggleFormButton').addEventListener('click', function() {
-            const form = document.getElementById('reviewForm');
-            const button = this;
-
-            if (form.classList.contains('show')) {
-                form.classList.remove('show');
-                button.textContent = 'Write a Review';
-            } else {
-                form.classList.add('show');
-                button.textContent = 'Hide Review Form';
-            }
-        });
-    </script>
 </body>
 
 </html>

@@ -1,3 +1,42 @@
+<?php
+include ('../../database/dbconnect.php');
+
+try {
+    // Count total reviews
+    $sql_total_reviews = "SELECT COUNT(*) AS total_reviews FROM reviews";
+    $stmt_total_reviews = $pdo->query($sql_total_reviews);
+    $total_reviews = $stmt_total_reviews->fetchColumn(); // Fetch the total count directly
+
+    // Fetch the latest 5 reviews with associated data
+    $query = "SELECT r.date_created,
+                r.comment,
+                u.user_firstname AS customer_name,
+                p.name AS product_name,
+                img.img_path AS product_image
+        FROM reviews r
+        INNER JOIN users u ON r.users_id = u.id
+        INNER JOIN orders o ON r.orders_id = o.orders_id
+        INNER JOIN orders_item oi ON o.orders_id = oi.orders_id
+        INNER JOIN product p ON oi.product_id = p.product_id
+        INNER JOIN LATERAL (
+            SELECT img_path 
+            FROM img
+            WHERE product_id = p.product_id 
+            ORDER BY img_id ASC 
+            LIMIT 1 OFFSET 1 -- Get the 2nd image
+        ) img ON TRUE
+        ORDER BY r.date_created DESC
+        LIMIT 5";
+
+$stmt = $pdo->query($query);
+$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,17 +44,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- BOOTSTRAP CSS -->
   <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
-
-  <!-- BOOTSTRAP ICON -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <!-- FONT AWESOME CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- CUSTOM CSS -->
   <link rel="stylesheet" href="../../assets/css/landingpage.css">
 
   <title>Interllux</title>
@@ -45,106 +76,24 @@
   <!-- ######### REVIEWS SECTION ########-->
   <div class="container-fluid pt-5" id="reviews-section">
     <h3 class="text-center pt-1 fw-bold">Our Customers, Our Voice</h3>
-    <p class="text-center">from 714 reviews</p>
+    <p class="text-center">from <?php echo htmlspecialchars($total_reviews); ?> reviews</p>
 
     <!-- Horizontal Scrollable Cards -->
     <div class="scroll-container">
-      <!-- Card 1 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Classic Flap Bag.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Dhennis C.</h5>
-          <p class="fw-bold">Classic Flap Bag</p>
-          <p class="card-text">Great value for the money! This product has been super helpful, and I’m really happy with
-            it.</p>
-          <p class="card-text"><strong>Date: </strong> 2024-09-04</p>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Alma BB.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Selwyn G.</h5>
-          <p class="fw-bold">Alma BB</p>
-          <p class="card-text">This product is absolutely amazing! The quality is fantastic...</p>
-          <p class="card-text"><strong>Date: </strong> 2024-09-16</p>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Dior Book Tote.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Jorence M.</h5>
-          <p class="fw-bold">Dior Book Tote</p>
-          <p class="card-text">Better than I expected! Service was great and the product is in good shape.</p>
-          <p class="card-text"><strong>Date: </strong> 2024-09-28</p>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Gucci Marmont Matelassé.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Orlando D.</h5>
-          <p class="fw-bold">Gucci Marmont Matelassé</p>
-          <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d recommend it
-          </p>
-          <p class="card-text"><strong>Date:</strong> 2024-10-05</p>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Bottega Veneta Cassette.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Satria C.</h5>
-          <p class="fw-bold">Bottega Veneta Cassette</p>
-          <p class="card-text">Absolutely love this product! It’s exactly what I needed and works perfectly. Will
-            definitely buy again
-          </p>
-          <p class="card-text"><strong>Date: </strong> 2024-10-20</p>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Chanel Boy Bag.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Lorelie D.</h5>
-          <p class="fw-bold">Channel Boy Bag</p>
-          <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d recommend it
-          </p>
-          <p class="card-text"><strong>Date: </strong> 2024-10-24</p>
-        </div>
-      </div>
-
-      <!-- Card 7 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Prada Nylon Backpack.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Lester M.</h5>
-          <p class="fw-bold">Prada Nylon Backpack</p>
-          <p class="card-text">Not bad at all! Does the job well and seems to be pretty durable. I’d recommend it
-          </p>
-          <p class="card-text"><strong>Date: </strong> 2024-10-26</p>
-        </div>
-      </div>
-
-      <!-- Card 8 -->
-      <div class="review-card card">
-        <img src="../../assets/image/Hermes Birkin 30.png" class="card-img-top" alt="Product Image">
-        <div class="card-body text-center">
-          <h5 class="card-title mt-2">Luisa M.</h5>
-          <p class="fw-bold">Hermes Berkin</p>
-          <p class="card-text">Could find a better product somewhere else, not likeable for me.
-          </p>
-          <p class="card-text"><strong>Date: </strong> 2024-09-28</p>
-        </div>
-      </div>
-      <!-- Repeat more cards as needed -->
-    </div>
+    <?php foreach ($reviews as $review): ?>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <img src="<?= htmlspecialchars($review['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($review['product_name']) ?>">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mt-2"><?= htmlspecialchars($review['customer_name']) ?></h5>
+                            <p class="fw-bold"><?= htmlspecialchars($review['product_name']) ?></p>
+                            <p class="card-text"><?= htmlspecialchars($review['comment']) ?></p>
+                            <p class="card-text"><strong>Date: </strong> <?= htmlspecialchars($review['date_created']) ?></p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+</div>
 
     <!-- READ MORE REVIEWS BUTTON -->
     <div class="text-center mt-3">

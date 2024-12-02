@@ -5,15 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Information</title>
-
   <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
-
   <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
-
-  <!-- BOOTSTRAP ICON -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <!-- FONT AWESOME CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
@@ -65,15 +59,13 @@
   <!-- END NAVBAR -->
 
   <!-- PROFILE BACKGROUND-->
-  <div class="profile-background container-fluid mt-5 pt-3">
-    <h5 class="pt-5 ms-3">Hi! Orlando</h5>
-  </div>
+  <div class="profile-background container-fluid mt-5 pt-3"></div>
 
   <div class="container-fluid px-3 py-3">
     <div class="container-fluid  d-flex justify-content-end mb-3 mt-3">
       <!-- EDIT BUTTONS -->
-      <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editUsernameModal">
-        Edit Username or Password
+      <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editEmailModal">
+        Edit Email or Password
       </button>
       <button class="btn btn-light border-dark ms-4" data-bs-toggle="modal" data-bs-target="#editDetailsModal">
         Edit Account Details
@@ -88,10 +80,10 @@
     <h5 class="mb-4 mt-3">Account Details</h4>
       <form>
         <div class="row mb-4">
-          <!-- DISPLAY USERNAME -->
+          <!-- DISPLAY EMAIL -->
           <div class="col-md-6">
-            <label for="username" class="form-label">User Name</label>
-            <input type="text" id="username" class="form-control" value="@Orlandzzz" disabled>
+            <label for="email" class="form-label">Email</label>
+            <input type="text" id="email" class="form-control" value="@Orlandzzz" disabled>
           </div>
           <!-- DISPLAY PASSWORD -->
           <div class="col-md-6">
@@ -115,12 +107,6 @@
           <div class="col-md-3 mb-3">
             <label for="lastName" class="form-label">Last Name</label>
             <input type="text" id="lastName" class="form-control" value="Dela Cruz" disabled>
-          </div>
-
-          <!-- DISPLAY EMAIL-->
-          <div class="col-md-3 mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" value="delacruzorlando776@gmail.com" disabled>
           </div>
 
           <!-- DISPLAY CONTACT NUMBER-->
@@ -176,20 +162,20 @@
       </form>
   </div>
 
-  <!-- EDIT USERNAME/PASSWORD -->
-  <div class="modal fade" id="editUsernameModal" tabindex="-1" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
+  <!-- EDIT EMAIL/PASSWORD -->
+  <div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editUsernameModalLabel">Edit Username or Password</h5>
+          <h5 class="modal-title" id="editEmailModalLabel">Edit Email or Password</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
-            <!-- EDIT USERNAME-->
+            <!-- EDIT EMAIL -->
             <div class="mb-3">
-              <label for="editUsername" class="form-label">User Name</label>
-              <input type="text" id="editUsername" class="form-control shadow-none">
+              <label for="editEmail" class="form-label">Email</label>
+              <input type="email" id="editEmail" class="form-control shadow-none">
             </div>
             <!-- EDIT PASSWORD -->
             <div class="mb-3">
@@ -231,11 +217,6 @@
             <div class="mb-3">
               <label for="editLastName" class="form-label">Last Name</label>
               <input type="text" id="editLastName" class="form-control shadow-none">
-            </div>
-            <!-- EDIT EMAIL -->
-            <div class="mb-3">
-              <label for="editEmail" class="form-label">Email</label>
-              <input type="email" id="editEmail" class="form-control shadow-none">
             </div>
             <!-- EDIT CONTACT NUMBER -->
             <div class="mb-3">
