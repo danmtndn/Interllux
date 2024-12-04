@@ -63,6 +63,8 @@ $totalPages = ceil($totalRestocks / $itemsPerPage);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restock Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     .custom-modal .modal-content {
         border-radius: 15px;
@@ -243,6 +245,8 @@ $totalPages = ceil($totalRestocks / $itemsPerPage);
         </section>
     </main>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize dropdowns
@@ -300,7 +304,7 @@ $totalPages = ceil($totalRestocks / $itemsPerPage);
                         document.getElementById('tracking-no').value = data
                             .delivery_reference_number;
                         document.getElementById('status').value = data
-                            .restock_delivery_status;
+                            .restock_delivery_status.toLowerCase();
                         document.getElementById('delivery-date').value = data
                             .restock_delivery_date;
                         restockModal.show();
@@ -315,27 +319,32 @@ $totalPages = ceil($totalRestocks / $itemsPerPage);
         restockForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
+
             fetch('update-restock.php', {
                     method: 'POST',
                     body: formData
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.json().then(err => {
+                            throw err;
+                        });
                     }
                     return response.json();
                 })
                 .then(data => {
                     if (data.success) {
+                        alert('Restock updated successfully!');
                         restockModal.hide();
                         location.reload(); // Reload the page to show updated data
                     } else {
-                        alert('Error updating restock: ' + (data.message || 'Unknown error'));
+                        throw new Error(data.message || 'Unknown error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while processing your request: ' + error.message);
+                    alert('An error occurred while processing your request: ' + (error.message ||
+                        'Unknown error'));
                 });
         });
     });
