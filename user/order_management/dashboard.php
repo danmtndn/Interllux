@@ -62,7 +62,7 @@ if (isset($_SESSION['id'])) {
 
   <link rel="stylesheet" href="../../assets/css/order.css">
 
-  <title>Order Tracker</title>
+  <title>Dashboard - Interllux</title>
 
   <style>
   </style>
@@ -76,11 +76,11 @@ if (isset($_SESSION['id'])) {
   ?>
 
   <div class="profile-container container-fluid py-5 mt-3 text-dark" style="height: 200px;">
-    <h5>Hello! <?php echo htmlspecialchars($first_name); ?></h5>
+    <h5>Hello, <?php echo htmlspecialchars($first_name);?>!</h5>
   </div>
   <!-- ORDER TRACKER BUTTONS -->
   <div class="container mt-3 pb-5">
-    <h5 class="mb-3">Your Orders</h5>
+    <h5 class="mb-3">My Orders</h5>
     <div class="row text-center">
       <!-- TO PAY -->
       <div class="col p-0">
@@ -122,7 +122,7 @@ if (isset($_SESSION['id'])) {
       <div class="col p-0">
         <a class="text-dark" href="tracker.php?tab=to-rate">
           <button type="button" class="tracker-btn btn btn-sm position-relative p-0 px-2">
-            <i class="bi-star fs-1"></i><br>Shipped
+            <i class="bi-check2-square fs-1"></i><br>Delivered
             <span class="position-absolute top-0 start-100 translate-middle pe-3 badge rounded-pill bg-dark 
                         <?php echo ($order_counts['delivered'] == 0) ? 'd-none' : ''; ?>">
               <?php echo $order_counts['delivered']; ?>
@@ -139,7 +139,7 @@ if (isset($_SESSION['id'])) {
       <div class="col p-0">
         <a class="text-dark" href="delivered.php">
           <button type="button" class="tracker-btn btn btn-sm position-relative p-0 px-2">
-            <i class="bi bi-check2-square fs-1"></i><br>Delivered
+            <i class="bi bi-star fs-1"></i><br>Rate
             <span class="position-absolute top-0 start-100 translate-middle pe-3 badge rounded-pill bg-dark 
                         <?php echo ($order_counts['completed'] == 0) ? 'd-none' : ''; ?>">
               <?php echo $order_counts['completed']; ?>

@@ -1,114 +1,53 @@
 /* CSS FOR ADMIN SIDE! */
+
 body {
     font-family: "Inter", sans-serif;
-    overflow: hidden;
 }
 
-
-/* FIXED NAVBAR */
-#main-header {
-    background: linear-gradient(90deg, #ae8625, #f7ef8a, #d2ac47, #edc967);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
+/* SIDEBAR */
+.offcanvas-body, .offcanvas-header {
+    background-color: black;
 }
 
-#dropdownMenuButton::after {
-    display: none;
-}
-
-
-/* FIXED SIDEBAR */
-#sidebar {
-    min-height: 100vh;
-    position: fixed;
-    top: 4.313rem;
-    bottom: 0;
-    width: 250px;
-    z-index: 1000;
-    height: calc(100vh - 4.313rem);
-    overflow-y: auto;
-    transition: transform 0.3s ease;
-}
-
-#sidebar.collapsing {
-    transform: translateX(-100%);
-}
-
-#sidebar.show {
-    transform: translateX(0);
-}
-
-#sidebar ul {
+.offcanvas-body ul {
     border: none;
 }
 
-#sidebar ul li {
+.offcanvas-body ul li {
     background-color: white;
     margin-top: 15px;
     margin-bottom: 15px;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
-#sidebar ul li a {
+.offcanvas-body ul li a {
     text-decoration: none;
     font-size: 25px;
     font-weight: bold;
 }
 
-#sidebar .sidebar-item {
+.offcanvas-body .sidebar-item {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-#sidebar .sidebar-item:hover {
+.offcanvas-body .sidebar-item:hover {
     background-color: rgba(207, 207, 207, 0.9);
 }
 
-#sidebar .dropdown-item {
+.offcanvas .dropdown-item {
     font-size: 1rem !important;
     font-weight: normal !important;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-#sidebar .dropdown-item:hover {
+.offcanvas .dropdown-item:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-
-/* MAIN CONTENT WRAPPER */
-#content-wrapper {
-    top: 4.313rem;
-    position: relative;
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    height: calc(100vh - 4.313rem);
-    overflow-y: auto;
-    transition: margin-left 0.3s ease;
-}
-
-@media (max-width: 768px) {
-    #sidebar {
-        position: absolute;
-        top: 4.313rem;
-        left: 0;
-        bottom: 0;
-        height: 100vh;
-        z-index: 10;
-    }
-
-    #content-wrapper {
-        margin-left: 0;
-        width: 100%;
-    }
-}
-
-
 /* NOTIFICATION */
-#notification-modal {
-    top: 3rem;
-}
+/* #notification-modal .modal-header, .modal-body {
+    background-color: #D2D0D0EB;
+} */
 
 @media (max-width: 575px) {
     #notification-modal {
@@ -121,7 +60,6 @@ body {
         font-size: .9rem;
     }
 }
-
 
 /* DASHBOARD */
 #dashboard .card {
@@ -149,7 +87,6 @@ body {
     }
 }
 
-
 /* INVENTORY */
 #inventory .card {
     background-color: #F6F6F6 !important;
@@ -165,7 +102,6 @@ body {
     box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);
 }
 
-
 /* PRODUCT DETAILS */
 #product-details .content .btn {
     border-radius: 8px;
@@ -174,7 +110,6 @@ body {
 #product-details .form-control {
     border-radius: 8px;
 }
-
 
 /* EDIT & ADD PRODUCT DETAILS */
 #edit-details .form-control {
@@ -197,7 +132,6 @@ body {
     background-color: #FFFFFF;
 }
 
-
 /* EDIT MONTHLY QUOTA */
 #monthly-quota .form-control {
     background-color: #F6F6F6;
@@ -216,6 +150,26 @@ body {
     }
 }
 
+/* EDIT & ADD RETURNED ITEM */
+/* #edit-returned .form-control {
+    background-color: #F6F6F6;
+    border-radius: 8px;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);
+}
+
+#edit-returned .custom-modal .modal-body {
+    background-color: #FFFFFF;
+}
+
+#add-return .form-control {
+    background-color: #F6F6F6;
+    border-radius: 8px;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);
+}
+
+#add-return .custom-modal .modal-body {
+    background-color: #FFFFFF;
+} */
 
 /* RESTOCK */
 #restock .modal-content {
@@ -237,12 +191,10 @@ body {
     }
 }
 
-
 /* ACCOUNTS */
 #customer-modal .modal-body {
     background-color: #FFFFFF;
 }
-
 
 /* REPORTS */
 #reports .card {
@@ -253,12 +205,10 @@ body {
     display: flex;
 }
 
-
 /* INVENTORY REPORT */
 #inventory-report .form-select {
     border-radius: 10px;
 }
-
 
 /* FOR TABLES ONLY */
 .table {

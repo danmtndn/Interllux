@@ -74,7 +74,7 @@ WHERE o.order_status = 'delivered' AND o.users_id = :userId";
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-  <title>Track Your Orders</title>
+  <title>Tracker - Interllux</title>
 
   <style>
     .nav-item.active::after {
@@ -114,36 +114,9 @@ WHERE o.order_status = 'delivered' AND o.users_id = :userId";
 </head>
 
 <body>
-<div id="navbar">
-        <script src="../../assets/js/navbar.js"></script>
-    </div>
-
-  <!-- Off-canvas Cart on the Right -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="cartPanel" aria-labelledby="cartPanelLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="cartPanelLabel">Cart</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <hr>
-    <div class="offcanvas-body">
-      <!-- Cart Item Example -->
-      <div class="cart-item">
-        <img src="../../assets/image/Balenciaga City Bag.png" alt="Product Image" width="70">
-        <div class="item-details">
-          <p class="item-name">Birkin 30 Graphite Matte Alligator in Gold Hardware Stamp X</p>
-          <p class="item-price">₱2,900,000.00</p>
-          <div class="item-quantity">
-            <button class="qty-btn">-</button>
-            <span>1</span>
-            <button class="qty-btn">+</button>
-          </div>
-          <a href="#" class="remove-item text-black">Remove</a>
-        </div>
-      </div>
-      <button id="checkout-button"><a href="../../user/checkout_payment/payment.php" class="checkout">Checkout • <p class="text-center fw-normal m-0" id="total">₱2,900,000.00</p></a></button>
-    </div>
-  </div>
-  <!-- END NAVBAR -->
+  <?php
+  include '../../user/component/navbar.php';
+  ?>
 
   <div class="container mt-md-5 mt-4 pt-5">
     <div class="row border pt-3">
@@ -206,101 +179,116 @@ WHERE o.order_status = 'delivered' AND o.users_id = :userId";
 
     $sql = "
     SELECT 
-    p.name AS product_name,
-    p.color,
-    oi.quantity,
-    oi.unit_price,
-    o.order_status
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path,
+      o.orders_id
     FROM orders o
     JOIN orders_item oi ON o.orders_id = oi.orders_id
     JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
     WHERE o.order_status = 'pending' AND o.users_id = :userId";
 
-    $stmt = $pdo->prepare($sql); // Use prepare
-    $stmt->execute(['userId' => $userId]); // Bind parameters
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Render all orders under 'To Pay' without checking for emptiness
     foreach ($orders as $order) {
+      $itemTotal = $order['quantity'] * $order['unit_price'];
+      $grandTotal = $itemTotal + $order['shipping_cost'];
+
       echo '<div id="to-pay" class="tab-content container mt-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card d-flex flex-row p-2">
-                                <img src="../../assets/image/' . $order['product_name'] . '.png" class="img-fluid" alt="' . $order['product_name'] . '"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="card-body text-start p-0 ps-2 mt-2">
-                                    <p class="product-name fw-bold mb-0">' . $order['product_name'] . '.</p>
-                                    <p class="mb-3">Color: ' . $order['color'] . '</p>
-                                    <a href="details-to-pay.php" onclick="saveToPayDetails()">
-                                        <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">View Order</u></button>
-                                    </a>
-                                </div>
-                                <div class="card-body p-0 pe-2 text-end price-info">
-                                    <p class="m-0 fw-bold">' . $order['order_status'] . '</p>
-                                    <p class="m-0 mt-4">Quantity: ×' . $order['quantity'] . '</p>
-                                    <p class="m-0 mt-1 fw-bold">Php.' . number_format($order['unit_price'], 2) . '</p>
-                                    <a href="../../user/user_auth/contact-us.php#cancel-policy">
-                                        <button type="button" class="btn btn-sm btn-dark mt-2">Contact Us</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>';
+            <div class="row">
+              <div class="col-12">
+                <div class="card d-flex flex-row p-2">
+                  <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                    style="width: 100px; height: 100px; object-fit: cover;">
+                  <div class="card-body text-start p-0 ps-2 mt-2">
+                    <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                    <p class="mb-3">Color: ' . $order['color'] . '</p>
+                    <a href="details-to-pay.php" onclick="saveToPayDetails()">
+                      <button type="button" class="view-order-btn btn btn-sm p-1">
+                        <u class="fw-bold">View Order</u>
+                      </button>
+                    </a>
+                  </div>
+                  <div class="card-body p-0 pe-2 text-end price-info">
+                    <p class="m-0 fw-bold">' . $order['order_status'] . '</p>
+                    <p class="m-0 mt-4">Quantity: ×' . $order['quantity'] . '</p>
+                    <p class="m-0 mt-4 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    <a href="../../user/user_auth/contact-us.php#cancel-policy">
+                      <button type="button" class="btn btn-sm btn-dark mt-2">Contact Us</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>';
     }
   } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
   }
   ?>
 
+
+
   <!-- to ship -->
   <?php
   include '../../database/dbconnect.php';
 
   try {
-    // Modify query to fetch orders that are "completed"
     $sql = "
-        SELECT 
-            p.name AS product_name,
-            p.color,
-            oi.quantity,
-            oi.unit_price,
-            o.order_status
-        FROM orders o
-        JOIN orders_item oi ON o.orders_id = oi.orders_id
-        JOIN product p ON oi.product_id = p.product_id
-        WHERE o.order_status = 'processing' AND o.users_id = :userId"; // Removed LIMIT 1 to fetch all relevant completed orders
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'processing' AND o.users_id = :userId";
 
-        $stmt = $pdo->prepare($sql); // Corrected: Use prepare instead of query
-        $stmt->execute(['userId' => $userId]); // Corrected: Execute with bound parameter
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Check if there are any completed orders
-    if (empty($orders)) {
-      
-    } else {
+    if (!empty($orders)) {
       foreach ($orders as $order) {
+        // Calculate item total and grand total
+        $itemTotal = $order['quantity'] * $order['unit_price'];
+        $grandTotal = $itemTotal + $order['shipping_cost'];
+
         echo '<div id="to-ship" class="tab-content container mt-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card d-flex flex-row p-2">
-                                <img src="../../assets/image/' . $order['product_name'] . '.png" class="img-fluid" alt="' . $order['product_name'] . '"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="card-body text-start p-0 ps-2 mt-2">
-                                    <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
-                                    <p class="mb-3">Color: ' . $order['color'] . '</p>
-                                    <a href="details-to-ship.php" onclick="saveToShipDetails()">
-                                        <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">View Order</u></button>
-                                    </a>
-                                </div>
-                                <div class="card-body p-0 pe-2 text-end price-info">
-                                    <p class="m-0 fw-bold">' . $order['order_status'] . '</p>
-                                    <p class="m-0 mt-5 fw-bold">Php.' . number_format($order['unit_price'], 2) . '</p>
-                                </div>
-                            </div>
-                        </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="card d-flex flex-row p-2">
+                    <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="card-body text-start p-0 ps-2 mt-2">
+                      <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                      <p class="mb-3">Color: ' . $order['color'] . '</p>
+                      <a href="details-to-ship.php" onclick="saveToShipDetails()">
+                        <button type="button" class="view-order-btn btn btn-sm p-1">
+                          <u class="fw-bold">View Order</u>
+                        </button>
+                      </a>
                     </div>
-                </div>';
+                    <div class="card-body p-0 pe-2 text-end price-info">
+                      <p class="m-0 fw-bold">' . ucfirst($order['order_status']) . '</p>
+                      <p class="m-0 mt-5 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
       }
     }
   } catch (PDOException $e) {
@@ -308,54 +296,61 @@ WHERE o.order_status = 'delivered' AND o.users_id = :userId";
   }
   ?>
 
+
   <!-- to Receive -->
 
   <?php
   include '../../database/dbconnect.php';
 
   try {
-    // Modify query to fetch orders that are "Shipped"
     $sql = "
-        SELECT 
-            p.name AS product_name,
-            p.color,
-            oi.quantity,
-            oi.unit_price,
-            o.order_status
-        FROM orders o
-        JOIN orders_item oi ON o.orders_id = oi.orders_id
-        JOIN product p ON oi.product_id = p.product_id
-        WHERE o.order_status = 'shipped' AND o.users_id = :userId"; // Removed LIMIT 1 to fetch all relevant shipped orders
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'shipped' AND o.users_id = :userId";
 
-        $stmt = $pdo->prepare($sql); // Corrected: Use prepare instead of query
-        $stmt->execute(['userId' => $userId]); // Corrected: Execute with bound parameter
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Check if there are any shipped orders
-    if (empty($orders)) {
-    } else {
+    if (!empty($orders)) {
       foreach ($orders as $order) {
-        echo '<div id="shipped" class="tab-content container mt-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card d-flex flex-row p-2">
-                                <img src="../../assets/image/' . $order['product_name'] . '.png" class="img-fluid" alt="' . $order['product_name'] . '"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="card-body text-start p-0 ps-2 mt-2">
-                                    <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
-                                    <p class="mb-3">Color: ' . $order['color'] . '</p>
-                                    <a href="details-shipped.php" onclick="saveShippedDetails()">
-                                        <button type="button" class="view-order-btn btn btn-sm p-1" data-id="' . $order['product_name'] . '" data-category="Shipped"><u class="fw-bold">View Order</u></button>
-                                    </a>
-                                </div>
-                                <div class="card-body p-0 pe-2 text-end price-info">
-                                    <p class="m-0 fw-bold">In transit</p>
-                                    <p class="m-0 mt-5 fw-bold">Php.' . number_format($order['unit_price'], 2) . '</p>
-                                </div>
-                            </div>
-                        </div>
+        // Calculate item total and grand total
+        $itemTotal = $order['quantity'] * $order['unit_price'];
+        $grandTotal = $itemTotal + $order['shipping_cost'];
+
+        echo '<div id="to-ship" class="tab-content container mt-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card d-flex flex-row p-2">
+                    <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="card-body text-start p-0 ps-2 mt-2">
+                      <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                      <p class="mb-3">Color: ' . $order['color'] . '</p>
+                      <a href="details-to-ship.php" onclick="saveToShipDetails()">
+                        <button type="button" class="view-order-btn btn btn-sm p-1">
+                          <u class="fw-bold">View Order</u>
+                        </button>
+                      </a>
                     </div>
-                </div>';
+                    <div class="card-body p-0 pe-2 text-end price-info">
+                      <p class="m-0 fw-bold">' . ucfirst($order['order_status']) . '</p>
+                      <p class="m-0 mt-5 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
       }
     }
   } catch (PDOException $e) {
@@ -366,54 +361,63 @@ WHERE o.order_status = 'delivered' AND o.users_id = :userId";
   <!-- to rate -->
   <?php
   include '../../database/dbconnect.php';
+
   try {
-    // Modify query to fetch orders that are "delivered"
     $sql = "
-        SELECT 
-            p.name AS product_name,
-            p.color,
-            oi.quantity,
-            oi.unit_price,
-            o.order_status
-        FROM orders o
-        JOIN orders_item oi ON o.orders_id = oi.orders_id
-        JOIN product p ON oi.product_id = p.product_id
-        WHERE o.order_status = 'delivered' AND o.users_id = :userId"; // Removed LIMIT 1 to fetch all relevant delivered orders
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'delivered' AND o.users_id = :userId";
 
-        $stmt = $pdo->prepare($sql); // Corrected: Use prepare instead of query
-        $stmt->execute(['userId' => $userId]); // Corrected: Execute with bound parameter
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Check if there are any delivered orders to rate
-    if (empty($orders)) {
-    } else {
+    if (!empty($orders)) {
       foreach ($orders as $order) {
-        echo '<div id="to-rate" class="container tab-content mt-3">
-                    <div class="col-12">
-                        <div class="card d-flex flex-row p-2">
-                            <img src="../../assets/image/' . $order['product_name'] . '.png" class="img-fluid" alt="' . $order['product_name'] . '" style="width: 100px; height: 100px; object-fit: cover;">
-                            <div class="card-body text-start p-0 ps-2 mt-2">
-                                <p class="fw-bold product-name mb-0">' . $order['product_name'] . '</p>
-                                <p class="m-0">Color: ' . $order['color'] . '</p>
-                                <a href="details-to-rate.php" onclick="saveReviewDetails()">
-                                    <button type="button" class="view-order-btn btn btn-sm mt-1"><u class="fw-bold">View Order</u></button>
-                                </a>
-                            </div>
-                            <div class="card-body p-0 pe-2 text-end mt-2">
-                                <p class="fw-bold m-0 me-2">Price: Php.' . number_format($order['unit_price'], 2) . '</p>
-                                <button type="button" class="btn btn-dark mt-4 write-review-btn" style="font-size: 12px;" data-product=\'{"name": "' . $order['product_name'] . '", "color": "' . $order['color'] . '", "price": "' . $order['unit_price'] . '", "image": "../../assets/image/' . $order['product_name'] . '.png"}\'>
-                                    Write a Review
-                                </button>
-                            </div>
-                        </div>
+        // Calculate item total and grand total
+        $itemTotal = $order['quantity'] * $order['unit_price'];
+        $grandTotal = $itemTotal + $order['shipping_cost'];
+
+        echo '<div id="to-ship" class="tab-content container mt-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card d-flex flex-row p-2">
+                    <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="card-body text-start p-0 ps-2 mt-2">
+                      <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                      <p class="mb-3">Color: ' . $order['color'] . '</p>
+                      <a href="details-to-ship.php" onclick="saveToShipDetails()">
+                        <button type="button" class="view-order-btn btn btn-sm p-1">
+                          <u class="fw-bold">View Order</u>
+                        </button>
+                      </a>
                     </div>
-                </div>';
+                    <div class="card-body p-0 pe-2 text-end price-info">
+                      <p class="m-0 fw-bold">' . ucfirst($order['order_status']) . '</p>
+                      <p class="m-0 mt-5 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
       }
     }
   } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
   }
   ?>
+
 
 
 

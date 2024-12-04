@@ -58,9 +58,9 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <!-- NAVBAR -->
-    <div id="navbar">
-        <script src="../../assets/js/navbar.js"></script>
-    </div>
+    <?php
+    include '../../user/component/navbar.php';
+    ?>
     <!-- END OF NAVBAR -->
 
     <div class="container mt-5 pt-5">
@@ -72,7 +72,7 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container mt-5">
         <div class="row">
-            <?php foreach ($reviews as $review): ?>
+            <?php foreach ($reviews as $review) : ?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card">
                         <img src="<?= htmlspecialchars($review['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($review['product_name']) ?>">

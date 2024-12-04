@@ -6,7 +6,7 @@ $sort_order = $_GET['sort_order'] ?? 'ASC';  // Default to ascending
 
 // Validate sort order
 if (!in_array($sort_order, ['ASC', 'DESC'])) {
-    $sort_order = 'ASC';
+  $sort_order = 'ASC';
 }
 
 // Prepare and execute the SQL query
@@ -27,8 +27,8 @@ GROUP BY
 ORDER BY 
   RANDOM()";
 
-// Use query() instead of prepare() as there are no parameters
-$stmt = $pdo->query($query);
+$stmt = $pdo->prepare($query);
+$stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -68,14 +68,19 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     .sorting-bar {
       position: sticky;
-      top: 60px; /* Adjust to match your header's height */
-      z-index: 1000; /* Ensure it's above other elements */
-      background-color: #f8f9fa; /* Ensure it's always visible with a background */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for separation */
+      top: 60px;
+      /* Adjust to match your header's height */
+      z-index: 1000;
+      /* Ensure it's above other elements */
+      background-color: #f8f9fa;
+      /* Ensure it's always visible with a background */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      /* Slight shadow for separation */
       padding-top: 0.75rem;
       padding-bottom: 0.75rem;
     }
   </style>
+
 </head>
 
 <body>
@@ -90,12 +95,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row g-3 mt-3" id="productGrid">
       <!--Displaying of fetched data-->
       <div id="product-list" class="row">
-        <?php if (!empty($products)): ?>
-          <?php foreach (array_slice($products, 0, 4) as $product): ?>
+        <?php if (!empty($products)) : ?>
+          <?php foreach (array_slice($products, 0, 4) as $product) : ?>
             <div class="col-6 col-md-3 product-card" data-brand="<?= htmlspecialchars($product['brand']) ?>">
               <div class="card mb-3 rounded-0">
                 <a href="../product_catalog/product_details.php?product_id=<?= htmlspecialchars($product['product_id']) ?>" class="card-link nav-link text-dark">
@@ -111,7 +116,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
               </div>
             </div>
           <?php endforeach; ?>
-        <?php else: ?>
+        <?php else : ?>
           <p class="col-12 text-center">No products found.</p>
         <?php endif; ?>
       </div>
@@ -125,7 +130,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const productCards = document.querySelectorAll(".product-card");
       const seeMoreButton = document.getElementById("seeMoreButton");
       const itemsToShowDesktop = 4;
