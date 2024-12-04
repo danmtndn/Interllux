@@ -17,9 +17,11 @@
 </head>
 
 <body>
+    <!-- Navbar -->
     <header class="navbar bg-black text-white p-3" id="main-header">
         <div class="container-fluid">
-            <button class="btn text-white" id="hamburger-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions" aria-label="Toggle menu">
+            <button class="btn text-white d-md-none" id="hamburger-menu" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle menu">
                 <i class="fas fa-bars fa-2xl"></i>
             </button>
             <div class="d-flex ms-auto" id="notification">
@@ -28,70 +30,17 @@
                 </button>
                 <div class="dropdown">
                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                        aria-expanded="false" style="background-color: #000000;">
+                        aria-expanded="false">
                         <i class="fa-regular fa-circle-user fa-2xl text-white"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" href="admin-details.php">Profile</a></li>
-                        <!-- <li><a class="dropdown-item" href="./admin-auth/admin-login.php">Login</a></li> -->
                         <li><a class="dropdown-item" href="./admin-auth/admin-logout.php">Logout</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" style="width: 16rem;">
-            <div class="offcanvas-header">
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body mt-0 pt-0">
-                <ul class="list-unstyled">
-                    <li class="dropdown sidebar-item">
-                        <a href="../admin/dashboard.php" class="text-dark d-flex align-items-center" style="width: 100%;">
-                            <i class="fa-solid fa-chart-line mx-2" style="color: #000000;"></i>Dashboard
-                        </a>
-                    </li>
-
-                    <li class="dropdown sidebar-item">
-                        <a href="#" class="text-dark dropdown-toggle" id="inventoryDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-boxes-stacked mx-2" style="color: #000000;"></i>Inventory
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="inventoryDropdown" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
-                            <li><a class="dropdown-item" href="../admin/inventory-overview.php">Overview</a></li>
-                            <li><a class="dropdown-item" href="../admin/restock.php">Restock</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="dropdown sidebar-item">
-                        <a href="#" class="text-dark dropdown-toggle" id="ordersDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-cart-shopping mx-2" style="color: #000000;"></i>Orders
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="ordersDropdown"
-                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
-                            <li><a class="dropdown-item" href="../admin/order-overview.php">Overview</a></li>
-                            <li><a class="dropdown-item" href="../admin/order-delivered.php">Delivered</a></li>
-                            <li><a class="dropdown-item" href="../admin/order-cancelled.php">Cancelled</a></li>
-                            <li><a class="dropdown-item" href="../admin/order-return-refund.php">Return/Refund</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="dropdown sidebar-item">
-                        <a href="../admin/accounts.php" class="text-dark d-flex align-items-center" style="width: 100%;">
-                            <i class="fa-solid fa-user-group mx-2" style="color: #000000;"></i>Accounts
-                        </a>
-                    </li>
-                    <li class="dropdown sidebar-item">
-                        <a href="../admin/reports.php" class="text-dark d-flex align-items-center" style="width: 100%;">
-                            <i class="fa-solid fa-chart-bar mx-2" style="color: #000000;"></i>Reports
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
     </header>
-
 
     <!-- Notification Modal -->
     <div class="modal fade" id="notification-modal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="false">
@@ -146,3 +95,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Fixed Sidebar -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-2 bg-black p-3 pt-0 collapse d-md-block" id="sidebar">
+                <div class="text-center">
+                    <img class="img-fluid bg-white mt-4 mb-3 rounded-circle" src="../assets/image/logo-1.png" alt="Admin Login Logo"
+                    style="width: 7.9rem;">
+                </div>
+                <ul class="list-unstyled">
+                    <li class="dropdown sidebar-item">
+                        <a href="../admin/dashboard.php" class="text-dark d-flex align-items-center" style="width: 100%;">
+                            <i class="fa-solid fa-chart-line mx-2" style="color: #000000;"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="dropdown sidebar-item">
+                        <a href="#" class="text-dark dropdown-toggle" id="inventoryDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-boxes-stacked mx-2" style="color: #000000;"></i>Inventory
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-start mt-2 p-0" aria-labelledby="inventoryDropdown"
+                        style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
+                            <li><a class="dropdown-item" href="../admin/inventory-overview.php">Overview</a></li>
+                            <li><a class="dropdown-item" href="../admin/restock.php">Restock</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown sidebar-item">
+                        <a href="#" class="text-dark dropdown-toggle" id="ordersDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-cart-shopping mx-2" style="color: #000000;"></i>Orders
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-start mt-2 p-0" aria-labelledby="ordersDropdown"
+                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
+                            <li><a class="dropdown-item" href="../admin/order-overview.php">Overview</a></li>
+                            <li><a class="dropdown-item" href="../admin/order-delivered.php">Delivered</a></li>
+                            <li><a class="dropdown-item" href="../admin/order-cancelled.php">Cancelled</a></li>
+                            <li><a class="dropdown-item" href="../admin/order-return-refund.php">Return/Refund</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown sidebar-item">
+                        <a href="../admin/accounts.php" class="text-dark d-flex align-items-center" style="width: 100%;">
+                            <i class="fa-solid fa-user-group mx-2" style="color: #000000;"></i>Accounts
+                        </a>
+                    </li>
+                    <li class="dropdown sidebar-item">
+                        <a href="../admin/reports.php" class="text-dark d-flex align-items-center" style="width: 100%;">
+                            <i class="fa-solid fa-chart-bar mx-2" style="color: #000000;"></i>Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content Wrapper -->
+            <div class="col-12 col-md-9 col-lg-10 p-2" id="content-wrapper">

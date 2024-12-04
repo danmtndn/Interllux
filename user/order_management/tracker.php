@@ -1,3 +1,61 @@
+<?php
+session_start();
+include '../../database/dbconnect.php';
+
+if (!isset($_SESSION['id'])) {
+  echo "User is not logged in.";
+  exit();
+}
+
+$userId = $_SESSION['id'];
+// Initialize counts
+$toPayCount = 0;
+$toShipCount = 0;
+$shippedCount = 0;
+$toRateCount = 0;
+
+try {
+  // Query for "To Pay" orders (pending status)
+  // Query for "To Pay" orders (pending status)
+  $sql = "
+SELECT COUNT(*) AS count 
+FROM orders o
+WHERE o.order_status = 'pending' AND o.users_id = :userId";
+  $stmt = $pdo->prepare($sql); // Use prepare
+  $stmt->execute(['userId' => $userId]); // Bind parameter
+  $toPayCount = $stmt->fetchColumn(); // Fetch result
+
+  // Query for "To Ship" orders (completed status)
+  $sql = "
+SELECT COUNT(*) AS count 
+FROM orders o
+WHERE o.order_status = 'processing' AND o.users_id = :userId";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute(['userId' => $userId]);
+  $toShipCount = $stmt->fetchColumn();
+
+  // Query for "Shipped" orders
+  $sql = "
+SELECT COUNT(*) AS count 
+FROM orders o
+WHERE o.order_status = 'shipped' AND o.users_id = :userId";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute(['userId' => $userId]);
+  $shippedCount = $stmt->fetchColumn();
+
+  // Query for "To Rate" orders (delivered status)
+  $sql = "
+SELECT COUNT(*) AS count 
+FROM orders o
+WHERE o.order_status = 'delivered' AND o.users_id = :userId";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute(['userId' => $userId]);
+  $toRateCount = $stmt->fetchColumn();
+} catch (PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +74,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-  <title>Track Your Orders</title>
+  <title>Tracker - Interllux</title>
 
   <style>
     .nav-item.active::after {
@@ -56,238 +114,322 @@
 </head>
 
 <body>
-  <!-- NAVBAR -->
-  <nav class="navbar bg-body-tertiary fixed-top shadow-sm py-0">
-    <div class="container-fluid">
-      <!-- Left Arrow Icon -->
-      <a class="navbar-brand" href="order.php">
-        <button class="btn btn-sm px-1">
-          <i class="bi bi-arrow-left-short text-dark fs-1 fw-bold" style="font-size: 1.5rem;"></i>
-        </button>
-      </a>
-
-      <!-- Navbar Brand Name Centered -->
-      <a class="navbar-brand  mx-auto dm-serif-display letter-spacing-1 text-dark"
-        href="../../user/user_auth/index.php">
-        <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
-        Interllux
-      </a>
-      <p class="navbar-brand">
-        <i class="bi bi-arrow-left-short text-light" style="font-size: 1.5rem;"></i>
-      </p>
-    </div>
-  </nav>
-  <!-- END NAVBAR -->
-  <!-- Off-canvas Menu on the Left -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="sideNav" aria-labelledby="sideNavLabel">
-    <div class="offcanvas-header d-flex justify-content-center align-items-center">
-      <img src="../../assets/image/logo.png" alt="Interllux Logo" width="30" height="24">
-      <h4 class="offcanvas-title text-center flex-grow-1 dm-serif-display letter-spacing-1" id="sideNavLabel">
-        Interllux
-      </h4>
-      <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-
-    <div class="offcanvas-body position-relative">
-      <ul class="list-unstyled">
-        <li><a href="../../user/user_auth/index.php" class="text-dark text-decoration-none letter-spacing-1">Home</a>
-        </li>
-        <li><a href="../../user/product_catalog/product_catalog.php"
-            class="text-dark text-decoration-none letter-spacing-1">Products</a></li>
-        <li><a href="../../user/order_management/review.php"
-            class="text-dark text-decoration-none letter-spacing-1">Customer Reviews</a></li>
-        <li><a href="../../user/order_management/order.php" class="text-dark text-decoration-none letter-spacing-1">My
-            Orders</a></li>
-        <li><a href="../../user/user_auth/contact-us.php"
-            class="text-dark text-decoration-none letter-spacing-1">Contact Us</a></li>
-        <li><a href="../../user/user_auth/about-us.php" class="text-dark text-decoration-none letter-spacing-1">About
-            Us</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Off-canvas Cart on the Right -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="cartPanel" aria-labelledby="cartPanelLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="cartPanelLabel">Cart</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <hr>
-    <div class="offcanvas-body">
-      <!-- Cart Item Example -->
-      <div class="cart-item">
-        <img src="../../assets/image/Balenciaga City Bag.png" alt="Product Image" width="70">
-        <div class="item-details">
-          <p class="item-name">Birkin 30 Graphite Matte Alligator in Gold Hardware Stamp X</p>
-          <p class="item-price">₱2,900,000.00</p>
-          <div class="item-quantity">
-            <button class="qty-btn">-</button>
-            <span>1</span>
-            <button class="qty-btn">+</button>
-          </div>
-          <a href="#" class="remove-item text-black">Remove</a>
-        </div>
-      </div>
-      <button id="checkout-button"><a href="../../user/checkout_payment/payment.php" class="checkout">Checkout • <p
-            class="text-center fw-normal m-0" id="total">₱2,900,000.00</p></a></button>
-    </div>
-  </div>
-  <!-- END NAVBAR -->
+  <?php
+  include '../../user/component/navbar.php';
+  ?>
 
   <div class="container mt-md-5 mt-4 pt-5">
     <div class="row border pt-3">
       <div class="col">
         <button type="button" class="nav-item btn position-relative p-1 border-0" data-target="to-pay">
           To Pay
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-            1
-            <span class="visually-hidden">unread messages</span>
-          </span>
+          <?php if ($toPayCount > 0) : ?>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              <?php echo $toPayCount; ?>
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          <?php endif; ?>
         </button>
       </div>
 
       <div class="col">
         <button type="button" class="nav-item btn position-relative p-1 border-0" data-target="to-ship">
           To Ship
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-            1
-            <span class="visually-hidden">unread messages</span>
-          </span>
+          <?php if ($toShipCount > 0) : ?>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              <?php echo $toShipCount; ?>
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          <?php endif; ?>
         </button>
       </div>
       <div class="col">
         <button type="button" class="nav-item btn position-relative p-1 border-0" data-target="shipped">
           Shipped
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-            1
-            <span class="visually-hidden">unread messages</span>
-          </span>
+          <?php if ($shippedCount > 0) : ?>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              <?php echo $shippedCount; ?>
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          <?php endif; ?>
         </button>
       </div>
 
       <div class="col">
         <button type="button" class="nav-item btn position-relative p-1 border-0" data-target="to-rate">
           To Review
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-            1
-            <span class="visually-hidden">unread messages</span>
-          </span>
+          <?php if ($toRateCount > 0) : ?>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              <?php echo $toRateCount; ?>
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          <?php endif; ?>
         </button>
       </div>
     </div>
   </div>
 
+
   <!-- TO PAY CONTAINER -->
-  <div id="to-pay" class="tab-content container mt-3">
-    <div class="row">
-      <div class="col-12">
-        <div class="card d-flex flex-row p-2">
-          <img src="../../assets/image/Classic Flap Bag.png" class="img-fluid" alt="Classic Flap Bag"
-            style="width: 100px; height: 100px; object-fit: cover;">
-          <div class="card-body text-start p-0 ps-2 mt-2">
-            <p class="product-name fw-bold mb-0">Classic Flap Bag.</p>
-            <p class="mb-3">Color: Black</p>
-            <a href="details-to-pay.php" onclick="saveToPayDetails()">
-              <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">View Order</u></button>
-            </a>
+  <?php
+  include '../../database/dbconnect.php';
 
-          </div>
-          <div class="card-body p-0 pe-2 text-end price-info">
-            <p class="m-0 fw-bold">Waiting for Seller</p>
-            <p class="m-0 mt-4">Quantity: ×1</p>
-            <p class="m-0 mt-1 fw-bold">Php.900</p>
-            <a href="../../user/user_auth/contact-us.php #cancel-policy"><button type="button"
-                class="btn btn-sm btn-dark mt-2">Contact
-                Us</button></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  try {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  <!-- TO SHIP CONTAINER -->
-  <div id="to-ship" class="tab-content container mt-3">
-    <div class="row">
-      <div class="col-12">
-        <div class="card d-flex flex-row p-2">
-          <img src="../../assets/image/Alma BB.png" class="img-fluid" alt="Alma BB"
-            style="width: 100px; height: 100px; object-fit: cover;">
-          <div class="card-body text-start p-0 ps-2 mt-2">
-            <p class="product-name fw-bold mb-0">Alma BB</p>
-            <p class="mb-3">Color: Brown</p>
-            <a href="details-to-ship.php" onclick="saveToShipDetails()">
-              <button type="button" class="view-order-btn btn btn-sm p-1"><u class="fw-bold">View Order</u></button>
-          </div>
-          </a>
+    $sql = "
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path,
+      o.orders_id
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'pending' AND o.users_id = :userId";
 
-          <div class="card-body p-0 pe-2 text-end price-info">
-            <p class="m-0 fw-bold">To Ship</p>
-            <p class="m-0 mt-5 fw-bold">Php.1200</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-  <!-- SHIPPED CONTAINER -->
-  <div id="shipped" class="tab-content container mt-3">
-    <div class="row">
-      <div class="col-12">
-        <div class="card d-flex flex-row p-2">
-          <img src="../../assets/image/Dior Book Tote.png" class="img-fluid" alt="Dior Book Tote"
-            style="width: 100px; height: 100px; object-fit: cover;">
-          <div class="card-body text-start p-0 ps-2 mt-2">
-            <p class="product-name fw-bold mb-0">Dior Book Tote</p>
-            <p class="mb-3">Color: White</p>
-            <a href="details-shipped.php" onclick="saveShippedDetails()">
-              <button type="button" class="view-order-btn btn btn-sm p-1" data-id="Dior Book Tote"
-                data-category="Shipped"><u class="fw-bold">View Order</u></button>
-            </a>
-          </div>
-          <div class="card-body p-0 pe-2 text-end price-info">
-            <p class="m-0 fw-bold">In transit</p>
-            <p class="m-0 mt-5 fw-bold">Php.1400</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    foreach ($orders as $order) {
+      $itemTotal = $order['quantity'] * $order['unit_price'];
+      $grandTotal = $itemTotal + $order['shipping_cost'];
 
-  <!-- TO RATE -->
-  <div id="to-rate" class="container tab-content mt-3">
-    <!-- PRODUCT 1 -->
-    <div class="col-12">
-      <div class="card d-flex flex-row p-2">
-        <img src="../../assets/image/Gucci Marmont Matelassé.png" class="img-fluid" alt="Gucci Marmont Matelassé"
-          style="width: 100px; height: 100px; object-fit: cover;">
-        <div class="card-body text-start p-0 ps-2 mt-2">
-          <p class="fw-bold product-name mb-0">Gucci Marmont Matelassé</p>
-          <p class="m-0">Color: Black</p>
-          <a href="details-to-rate.php" onclick="saveReviewDetails()">
-            <button type="button" class="view-order-btn btn btn-sm mt-1"><u class="fw-bold">View Order</u></button>
-          </a>
-        </div>
-        <div class="card-body p-0 pe-2 text-end mt-2">
-          <p class="fw-bold m-0 me-2">Price: $2,500</p>
-          <button type="button" class="btn btn-dark mt-4 write-review-btn" style="font-size: 12px;"
-            data-product='{"name": "Bottega Veneta Cassette", "color": "Black", "price": "2500", "image": "../../assets/image/Bottega Veneta Cassette.png"}'>
-            Write a Review
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- END PRODUCT 1 -->
-  </div>
+      echo '<div id="to-pay" class="tab-content container mt-3">
+            <div class="row">
+              <div class="col-12">
+                <div class="card d-flex flex-row p-2">
+                  <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                    style="width: 100px; height: 100px; object-fit: cover;">
+                  <div class="card-body text-start p-0 ps-2 mt-2">
+                    <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                    <p class="mb-3">Color: ' . $order['color'] . '</p>
+                    <a href="details-to-pay.php" onclick="saveToPayDetails()">
+                      <button type="button" class="view-order-btn btn btn-sm p-1">
+                        <u class="fw-bold">View Order</u>
+                      </button>
+                    </a>
+                  </div>
+                  <div class="card-body p-0 pe-2 text-end price-info">
+                    <p class="m-0 fw-bold">' . $order['order_status'] . '</p>
+                    <p class="m-0 mt-4">Quantity: ×' . $order['quantity'] . '</p>
+                    <p class="m-0 mt-4 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    <a href="../../user/user_auth/contact-us.php#cancel-policy">
+                      <button type="button" class="btn btn-sm btn-dark mt-2">Contact Us</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>';
+    }
+  } catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+  }
+  ?>
+
+
+
+  <!-- to ship -->
+  <?php
+  include '../../database/dbconnect.php';
+
+  try {
+    $sql = "
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'processing' AND o.users_id = :userId";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!empty($orders)) {
+      foreach ($orders as $order) {
+        // Calculate item total and grand total
+        $itemTotal = $order['quantity'] * $order['unit_price'];
+        $grandTotal = $itemTotal + $order['shipping_cost'];
+
+        echo '<div id="to-ship" class="tab-content container mt-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card d-flex flex-row p-2">
+                    <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="card-body text-start p-0 ps-2 mt-2">
+                      <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                      <p class="mb-3">Color: ' . $order['color'] . '</p>
+                      <a href="details-to-ship.php" onclick="saveToShipDetails()">
+                        <button type="button" class="view-order-btn btn btn-sm p-1">
+                          <u class="fw-bold">View Order</u>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="card-body p-0 pe-2 text-end price-info">
+                      <p class="m-0 fw-bold">' . ucfirst($order['order_status']) . '</p>
+                      <p class="m-0 mt-5 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
+      }
+    }
+  } catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+  }
+  ?>
+
+
+  <!-- to Receive -->
+
+  <?php
+  include '../../database/dbconnect.php';
+
+  try {
+    $sql = "
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'shipped' AND o.users_id = :userId";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!empty($orders)) {
+      foreach ($orders as $order) {
+        // Calculate item total and grand total
+        $itemTotal = $order['quantity'] * $order['unit_price'];
+        $grandTotal = $itemTotal + $order['shipping_cost'];
+
+        echo '<div id="to-ship" class="tab-content container mt-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card d-flex flex-row p-2">
+                    <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="card-body text-start p-0 ps-2 mt-2">
+                      <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                      <p class="mb-3">Color: ' . $order['color'] . '</p>
+                      <a href="details-to-ship.php" onclick="saveToShipDetails()">
+                        <button type="button" class="view-order-btn btn btn-sm p-1">
+                          <u class="fw-bold">View Order</u>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="card-body p-0 pe-2 text-end price-info">
+                      <p class="m-0 fw-bold">' . ucfirst($order['order_status']) . '</p>
+                      <p class="m-0 mt-5 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
+      }
+    }
+  } catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+  }
+  ?>
+
+  <!-- to rate -->
+  <?php
+  include '../../database/dbconnect.php';
+
+  try {
+    $sql = "
+    SELECT 
+      p.name AS product_name,
+      p.color,
+      oi.quantity,
+      oi.unit_price,
+      o.order_status,
+      o.shipping_cost,
+      i.img_path
+    FROM orders o
+    JOIN orders_item oi ON o.orders_id = oi.orders_id
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN img i ON p.product_id = i.product_id
+    WHERE o.order_status = 'delivered' AND o.users_id = :userId";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['userId' => $userId]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!empty($orders)) {
+      foreach ($orders as $order) {
+        // Calculate item total and grand total
+        $itemTotal = $order['quantity'] * $order['unit_price'];
+        $grandTotal = $itemTotal + $order['shipping_cost'];
+
+        echo '<div id="to-ship" class="tab-content container mt-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card d-flex flex-row p-2">
+                    <img src="' . $order['img_path'] . '" class="img-fluid" alt="' . $order['product_name'] . '"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="card-body text-start p-0 ps-2 mt-2">
+                      <p class="product-name fw-bold mb-0">' . $order['product_name'] . '</p>
+                      <p class="mb-3">Color: ' . $order['color'] . '</p>
+                      <a href="details-to-ship.php" onclick="saveToShipDetails()">
+                        <button type="button" class="view-order-btn btn btn-sm p-1">
+                          <u class="fw-bold">View Order</u>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="card-body p-0 pe-2 text-end price-info">
+                      <p class="m-0 fw-bold">' . ucfirst($order['order_status']) . '</p>
+                      <p class="m-0 mt-5 fw-bold text-primary">Total: Php ' . number_format($grandTotal, 2) . '</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
+      }
+    }
+  } catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+  }
+  ?>
+
+
+
 
   <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
 
   <script src="../../assets/js/tracker.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       // Get URL parameters
       const urlParams = new URLSearchParams(window.location.search);
-      const tab = urlParams.get("tab");  // Read the "tab" parameter
+      const tab = urlParams.get("tab"); // Read the "tab" parameter
 
       // Function to activate tab based on its ID
       function activateTab(tabId) {
@@ -310,13 +452,26 @@
 
       // Add click event listener to all nav items
       document.querySelectorAll(".nav-item").forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
           const targetTab = this.getAttribute("data-target");
           activateTab(targetTab);
         });
       });
+
+      // Inject the PHP variables into JavaScript
+      const toPayCount = <?php echo $toPayCount; ?>;
+      const toShipCount = <?php echo $toShipCount; ?>;
+      const shippedCount = <?php echo $shippedCount; ?>;
+      const toRateCount = <?php echo $toRateCount; ?>;
+
+      // Update the text content of the relevant elements
+      document.querySelector('#to-pay-count').textContent = toPayCount;
+      document.querySelector('#to-ship-count').textContent = toShipCount;
+      document.querySelector('#shipped-count').textContent = shippedCount;
+      document.querySelector('#to-rate-count').textContent = toRateCount;
     });
   </script>
+
 
 </body>
 

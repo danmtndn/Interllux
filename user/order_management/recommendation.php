@@ -1,26 +1,85 @@
+<?php
+include '../../database/dbconnect.php';  // Ensure correct path to DB connection
+
+// Fetch sorting filter from request
+$sort_order = $_GET['sort_order'] ?? 'ASC';  // Default to ascending
+
+// Validate sort order
+if (!in_array($sort_order, ['ASC', 'DESC'])) {
+  $sort_order = 'ASC';
+}
+
+// Prepare and execute the SQL query
+$query = "
+SELECT 
+  p.product_id, 
+  p.name, 
+  p.overview, 
+  p.price, 
+  p.brand, 
+  MIN(i.img_path) AS img_path
+FROM 
+  product AS p
+JOIN 
+  img AS i ON p.product_id = i.product_id
+GROUP BY 
+  p.product_id, p.name, p.overview, p.price, p.brand
+ORDER BY 
+  RANDOM()";
+
+$stmt = $pdo->prepare($query);
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- BOOTSTRAP CSS-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../assets/Bootstrap/css/bootstrap.css">
-
-  <!-- CUSTOM CSS -->
-  <link rel="stylesheet" href="../../assets/css/catalog.css">
-
-  <!-- BOOTSTRAP ICON LINK -->
+  <link rel="stylesheet" href="../../assets/css/product_catalog.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <title>Thrifty</title>
+  <style>
+    /* CSS for smooth transition */
+    .product-card {
+      transition: opacity 3s ease, max-height 3s ease;
+      overflow: hidden;
+      opacity: 1;
+      max-height: 500px;
+      /* Adjust as needed */
+    }
 
-  <!--########## WEBSITE TITLE ##########-->
-  <title>Thribfty</title>
+    .product-card.hidden {
+      opacity: 0;
+      max-height: 0;
+      pointer-events: none;
+    }
+
+    .product-card:hover {
+      cursor: pointer;
+    }
+
+    .sorting-bar {
+      position: sticky;
+      top: 60px;
+      /* Adjust to match your header's height */
+      z-index: 1000;
+      /* Ensure it's above other elements */
+      background-color: #f8f9fa;
+      /* Ensure it's always visible with a background */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      /* Slight shadow for separation */
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+  </style>
 
 </head>
 
@@ -36,67 +95,42 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid">
-
+  <div class="container">
     <div class="row g-3 mt-3" id="productGrid">
-      <!-- Sample Card Structure, repeat as needed -->
-      <div class="col-6 col-md-3 product-card">
-        <div class="card mb-3 rounded-0">
-          <img src="../../assets/image/Alma BB.png" class="card-img-top" alt="Alma BB">
-          <div class="card-body">
-            <h5 class="card-title" style="font-size: 14px;">Alma BB</h5>
-            <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-            <p class="fw-semibold m-1">₱69,999</p>
-            <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-          </div>
-        </div>
+      <!--Displaying of fetched data-->
+      <div id="product-list" class="row">
+        <?php if (!empty($products)) : ?>
+          <?php foreach (array_slice($products, 0, 4) as $product) : ?>
+            <div class="col-6 col-md-3 product-card" data-brand="<?= htmlspecialchars($product['brand']) ?>">
+              <div class="card mb-3 rounded-0">
+                <a href="../product_catalog/product_details.php?product_id=<?= htmlspecialchars($product['product_id']) ?>" class="card-link nav-link text-dark">
+                  <img src="<?= htmlspecialchars($product['img_path']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
+                  <div class="card-body">
+                    <h5 class="card-title" style="font-size: 14px;"><?= htmlspecialchars($product['name']) ?></h5>
+                    <p class="card-text"><?= htmlspecialchars($product['overview']) ?></p>
+                    <p class="fw-semibold m-1">₱<?= number_format($product['price'], 2) ?></p>
+                  </div>
+                </a>
+
+                <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php else : ?>
+          <p class="col-12 text-center">No products found.</p>
+        <?php endif; ?>
       </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid">
-        <div class="card mb-3 rounded-0">
-          <img src="../../assets/image/Balenciaga City Bag.png" class="card-img-top" alt="Alma BB">
-          <div class="card-body">
-            <h5 class="card-title" style="font-size: 14px;">Balenciaga</h5>
-            <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-            <p class="fw-semibold m-1">₱99,999</p>
-            <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid">
-        <div class="card mb-3 rounded-0">
-          <img src="../../assets/image/Balmain B-Buzz.png" class="card-img-top" alt="Alma BB">
-          <div class="card-body">
-            <h5 class="card-title" style="font-size: 14px;">Balmain</h5>
-            <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-            <p class="fw-semibold m-1">₱169,999</p>
-            <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3 product-card" id="productGrid">
-        <div class="card mb-3 rounded-0">
-          <img src="../../assets/image/Celine Belt Bag.png" class="card-img-top" alt="Alma BB">
-          <div class="card-body">
-            <h5 class="card-title" style="font-size: 14px;">Celine</h5>
-            <p class="card-text">A stylish and elegant bag perfect for everyday use.</p>
-            <p class="fw-semibold m-1">₱39,999</p>
-            <button class="btn btn-dark btn-add mt-3">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Repeat cards as needed -->
     </div>
 
     <div class="text-center mt-3">
-      <button id="seeMoreButton" class="btn btn-dark"><a href="../../user/product_catalog/product_catalog.php"
-          class="nav-link">See More</a></button>
+      <button id="seeMoreButton" class="btn btn-dark"><a href="../../user/product_catalog/product_catalog.php" class="nav-link">See More</a></button>
     </div>
   </div>
 
   <script src="../../assets/Bootstrap/js/bootstrap.bundle.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const productCards = document.querySelectorAll(".product-card");
       const seeMoreButton = document.getElementById("seeMoreButton");
       const itemsToShowDesktop = 4;
