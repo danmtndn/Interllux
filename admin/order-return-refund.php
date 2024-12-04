@@ -54,7 +54,7 @@ switch ($selected_date_filter) {
 }
 
 // Main query
-$query = 
+$query =
     "SELECT 
         t.transaction_id AS transaction_id, 
         o.orders_id AS order_no, 
@@ -71,8 +71,8 @@ $query =
 ";
 
 // Count total results for pagination
-$count_query = 
-   " SELECT COUNT(*) AS total_count
+$count_query =
+    " SELECT COUNT(*) AS total_count
     FROM transaction t
     LEFT JOIN orders o ON t.orders_id = o.orders_id
     WHERE t.transac_type IN ('return', 'refund') $date_filter $search_filter
@@ -109,13 +109,12 @@ $total_pages = ceil($total_count / $results_per_page);
         <div class="content p-4">
             <div class="row align-items-center">
                 <div class="col-12 col-md-6">
-                    <h1 class="fw-bold mb-0">Return/Refund</h1>
+                    <h1 class="fw-bold mb-0">Delivered Order List</h1>
                 </div>
-            </div>
 
-            <div class="col-12 col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
-    <div class="dropdown ms-auto">
-                        <!-- Set the button label dynamically with PHP -->
+                <div class="col-12 col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
+                    <div class="dropdown">
+                        <!-- Set the button label dynamically  -->
                         <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php echo htmlspecialchars($selected_date_filter); ?>
                         </button>
@@ -132,13 +131,16 @@ $total_pages = ceil($total_count / $results_per_page);
                 </div>
             </div>
 
-            <div class="search-bar col-auto">
-    <form action="" method="get" class="d-flex">
-        <input type="text" name="search" class="form-control me-2" placeholder="Type your search here" value="<?= htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '') ?>" style="width: 280px;">
-        <input type="hidden" name="date_filter" value="<?= htmlspecialchars($selected_date_filter) ?>">
-        <button type="submit" class="btn btn-dark"> <i class="fa-solid fa-magnifying-glass"></i></button>
-    </form>
-</div>
+            <div class="row align-items-center mt-3">
+                <div class="search-bar col-auto">
+                    <form action="" method="get" class="d-flex">
+                        <input type="text" name="search" class="form-control me-2" placeholder="Type your search here" value="" style="width: 280px;">
+                        <button type="submit" class="btn btn-dark"> <i class="fa-solid fa-magnifying-glass"> </i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="content table-responsive p-4 pt-2">
             <table class="table table-hover fs-6">
                 <thead>
@@ -151,36 +153,36 @@ $total_pages = ceil($total_count / $results_per_page);
                         <th scope="col">REASON</th>
                         <th scope="col">TRACKING NO.</th>
                     </tr>
-                    <tbody class="fw-light">
-    <?php if (!empty($results)): ?>
-        <?php foreach ($results as $row): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['transaction_id']) ?></td>
-                <td><?= htmlspecialchars($row['order_no']) ?></td>
-                <td><?= htmlspecialchars($row['type']) ?></td>
-                <td>₱<?= htmlspecialchars(number_format($row['total'], 2)) ?></td>
-                <td><?= htmlspecialchars($row['date']) ?></td>
-                <td><?= htmlspecialchars($row['reason'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($row['tracking_number'] ?? 'N/A') ?></td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="7" class="text-center">No results found</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-<tfoot class="fw-light">
+                <tbody class="fw-light">
+                    <?php if (!empty($results)): ?>
+                        <?php foreach ($results as $row): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['transaction_id']) ?></td>
+                                <td><?= htmlspecialchars($row['order_no']) ?></td>
+                                <td><?= htmlspecialchars($row['type']) ?></td>
+                                <td>₱<?= htmlspecialchars(number_format($row['total'], 2)) ?></td>
+                                <td><?= htmlspecialchars($row['date']) ?></td>
+                                <td><?= htmlspecialchars($row['reason'] ?? 'N/A') ?></td>
+                                <td><?= htmlspecialchars($row['tracking_number'] ?? 'N/A') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" class="text-center">No results found</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+                <tfoot class="fw-light">
                     <tr>
                         <td colspan="7">
                             <div class="d-flex justify-content-between small">
                                 <span>Showing <?php echo (($current_page - 1) * $results_per_page + 1) . ' to ' . min($current_page * $results_per_page, $total_count); ?> of <?php echo $total_count; ?> results</span>
                                 <div>
                                     <?php if ($current_page > 1): ?>
-                                        <a href="?page=<?php echo $current_page - 1; ?>&search=<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>"  class="btn btn-dark btn-sm">Previous</a>
+                                        <a href="?page=<?php echo $current_page - 1; ?>&search=<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>" class="btn btn-dark btn-sm">Previous</a>
                                     <?php endif; ?>
                                     <?php if ($current_page < $total_pages): ?>
-                                        <a href="?page=<?php echo $current_page + 1; ?>&search=<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>"  class="btn btn-dark btn-sm">Next</a>
+                                        <a href="?page=<?php echo $current_page + 1; ?>&search=<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>" class="btn btn-dark btn-sm">Next</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -190,4 +192,4 @@ $total_pages = ceil($total_count / $results_per_page);
             </table>
 
 
-<?php include '../partials/admin-footer.php'; ?>
+            <?php include '../partials/admin-footer.php'; ?>

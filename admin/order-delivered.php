@@ -13,37 +13,37 @@ $date_filter = '';
 $search_term = '%' . ($search ?? '') . '%';
 
 if ($selected_date_filter != 'Select Date') {
-    switch ($selected_date_filter) {
-        case 'Today':
-            $date_filter = "AND o.delivered_date::date = CURRENT_DATE";
-            break;
-        case 'This Week':
-            $date_filter = "AND o.delivered_date >= CURRENT_DATE - INTERVAL '7 days'";
-            break;
-        case 'Last Week':
-            $date_filter = "AND o.delivered_date >= CURRENT_DATE - INTERVAL '14 days' AND o.delivered_date < CURRENT_DATE - INTERVAL '7 days'";
-            break;
-        case 'This Month':
-            $date_filter = "AND EXTRACT(MONTH FROM o.delivered_date) = EXTRACT(MONTH FROM CURRENT_DATE) 
+  switch ($selected_date_filter) {
+    case 'Today':
+      $date_filter = "AND o.delivered_date::date = CURRENT_DATE";
+      break;
+    case 'This Week':
+      $date_filter = "AND o.delivered_date >= CURRENT_DATE - INTERVAL '7 days'";
+      break;
+    case 'Last Week':
+      $date_filter = "AND o.delivered_date >= CURRENT_DATE - INTERVAL '14 days' AND o.delivered_date < CURRENT_DATE - INTERVAL '7 days'";
+      break;
+    case 'This Month':
+      $date_filter = "AND EXTRACT(MONTH FROM o.delivered_date) = EXTRACT(MONTH FROM CURRENT_DATE) 
                             AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
-            break;
-        case 'Last Month':
-            $date_filter = "AND EXTRACT(MONTH FROM o.delivered_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') 
+      break;
+    case 'Last Month':
+      $date_filter = "AND EXTRACT(MONTH FROM o.delivered_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') 
                             AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month')";
-            break;
-        case 'This Quarter':
-            $date_filter = "AND EXTRACT(QUARTER FROM o.delivered_date) = EXTRACT(QUARTER FROM CURRENT_DATE) 
+      break;
+    case 'This Quarter':
+      $date_filter = "AND EXTRACT(QUARTER FROM o.delivered_date) = EXTRACT(QUARTER FROM CURRENT_DATE) 
                             AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
-            break;
-        case 'This Year':
-            $date_filter = "AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
-            break;
-    }
+      break;
+    case 'This Year':
+      $date_filter = "AND EXTRACT(YEAR FROM o.delivered_date) = EXTRACT(YEAR FROM CURRENT_DATE)";
+      break;
+  }
 }
 
 try {
-    // Count total rows
-    $count_query = "
+  // Count total rows
+  $count_query = "
         SELECT COUNT(DISTINCT o.orders_id) AS total
         FROM orders o
         JOIN users u ON o.users_id = u.id
@@ -56,14 +56,14 @@ try {
               o.orders_id::TEXT = :exact_search
           );
     ";
-    $count_stmt = $pdo->prepare($count_query);
-    $count_stmt->bindValue(':search', $search_term);
-    $count_stmt->bindValue(':exact_search', $search);
-    $count_stmt->execute();
-    $total_results = $count_stmt->fetchColumn();
+  $count_stmt = $pdo->prepare($count_query);
+  $count_stmt->bindValue(':search', $search_term);
+  $count_stmt->bindValue(':exact_search', $search);
+  $count_stmt->execute();
+  $total_results = $count_stmt->fetchColumn();
 
-    // Fetch paginated results
-    $query = "
+  // Fetch paginated results
+  $query = "
         SELECT o.orders_id,
                CONCAT(u.user_firstname, ' ', u.user_lastname) AS customer_name,
                STRING_AGG(p.name || ' (Qty: ' || oi.quantity || 'x)', ', ') AS order_items,
@@ -85,20 +85,20 @@ try {
         ORDER BY o.delivered_date ASC
         LIMIT :results_per_page OFFSET :offset;
     ";
-    
-    $stmt = $pdo->prepare($query);
-    $stmt->bindValue(':search', $search_term);
-    $stmt->bindValue(':exact_search', $search);
-    $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmt->execute();
-    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Calculate pagination info
-    $total_pages = ceil($total_results / $results_per_page);
+  $stmt = $pdo->prepare($query);
+  $stmt->bindValue(':search', $search_term);
+  $stmt->bindValue(':exact_search', $search);
+  $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
+  $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+  $stmt->execute();
+  $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  // Calculate pagination info
+  $total_pages = ceil($total_results / $results_per_page);
 } catch (PDOException $e) {
-    echo "Failed to fetch data: " . $e->getMessage();
-    exit;
+  echo "Failed to fetch data: " . $e->getMessage();
+  exit;
 }
 ?>
 
@@ -111,23 +111,23 @@ try {
         </div>
 
         <div class="col-12 col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
-        <div class="dropdown">
-                        <!-- Set the button label dynamically  -->
-                        <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo htmlspecialchars($selected_date_filter); ?>
-                        </button>
-                        <ul class="dropdown-menu border border-dark-subtle" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="?date_filter=Today">Today</a></li>
-                            <li><a class="dropdown-item" href="?date_filter=This Week">This Week</a></li>
-                            <li><a class="dropdown-item" href="?date_filter=Last Week">Last Week</a></li>
-                            <li><a class="dropdown-item" href="?date_filter=This Month">This Month</a></li>
-                            <li><a class="dropdown-item" href="?date_filter=Last Month">Last Month</a></li>
-                            <li><a class="dropdown-item" href="?date_filter=This Quarter">This Quarter</a></li>
-                            <li><a class="dropdown-item" href="?date_filter=This Year">This Year</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+          <div class="dropdown">
+            <!-- Set the button label dynamically  -->
+            <button class="btn dropdown-toggle btn-sm border border-dark-subtle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <?php echo htmlspecialchars($selected_date_filter); ?>
+            </button>
+            <ul class="dropdown-menu border border-dark-subtle" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="?date_filter=Today">Today</a></li>
+              <li><a class="dropdown-item" href="?date_filter=This Week">This Week</a></li>
+              <li><a class="dropdown-item" href="?date_filter=Last Week">Last Week</a></li>
+              <li><a class="dropdown-item" href="?date_filter=This Month">This Month</a></li>
+              <li><a class="dropdown-item" href="?date_filter=Last Month">Last Month</a></li>
+              <li><a class="dropdown-item" href="?date_filter=This Quarter">This Quarter</a></li>
+              <li><a class="dropdown-item" href="?date_filter=This Year">This Year</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <div class="row align-items-center mt-3">
         <div class="search-bar col-auto">
@@ -172,29 +172,29 @@ try {
           <?php endif; ?>
         </tbody>
         <tfoot class="fw-light">
-    <tr>
-        <td colspan="12">
-            <div class="d-flex justify-content-between small">
+          <tr>
+            <td colspan="12">
+              <div class="d-flex justify-content-between small">
                 <span>
-                    Showing 
-                    <?= $offset + 1 ?> 
-                    to 
-                    <?= min($offset + $results_per_page, $total_results) ?> 
-                    of <?= $total_results ?> results
+                  Showing
+                  <?= $offset + 1 ?>
+                  to
+                  <?= min($offset + $results_per_page, $total_results) ?>
+                  of <?= $total_results ?> results
                 </span>
                 <span>
-                    <?php if ($page > 1): ?>
-                        <a href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page - 1 ?>" class="btn btn-dark btn-sm">Previous</a>
-                    <?php endif; ?>
-                    <?php if ($page < $total_pages): ?>
-                        <a href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page + 1 ?>"class="btn btn-dark btn-sm">Next</a>
+                  <?php if ($page > 1): ?>
+                    <a href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page - 1 ?>" class="btn btn-dark btn-sm">Previous</a>
+                  <?php endif; ?>
+                  <?php if ($page < $total_pages): ?>
+                    <a href="?search=<?= htmlspecialchars($search) ?>&page=<?= $page + 1 ?>" class="btn btn-dark btn-sm">Next</a>
 
-                    <?php endif; ?>
+                  <?php endif; ?>
                 </span>
-            </div>
-        </td>
-    </tr>
-</tfoot>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <?php include '../partials/admin-footer.php'; ?>
